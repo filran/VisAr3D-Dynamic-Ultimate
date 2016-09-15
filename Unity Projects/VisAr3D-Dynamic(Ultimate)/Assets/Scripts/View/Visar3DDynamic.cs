@@ -31,7 +31,7 @@ namespace View {
                 //Render Sequence Diagram if exists
                 if (package.SequenceDiagrams.Count > 0)
                 {
-                    renderSequenceDiagram(package);
+                    addSequenceDiagram(package);
                 }
             }
 	    }
@@ -45,7 +45,7 @@ namespace View {
         #region PRIVATE METHODS
         
         //Render Sequence Diagram
-        private void renderSequenceDiagram(Package package)
+        private void addSequenceDiagram(Package package)
         {
             //ONE sequence diagram added
             SequenceDiagram SeqDiagComp = this.gameObject.AddComponent<SequenceDiagram>();
