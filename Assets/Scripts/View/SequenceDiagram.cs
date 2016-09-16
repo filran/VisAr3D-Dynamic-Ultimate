@@ -61,7 +61,7 @@ namespace View
                     CountLifelines++;
 
                     //Render each lifeline
-                    GameObject l = (GameObject)Instantiate(LifelineGO, new Vector3(scale(lifeline.Left), 0, 0), Quaternion.identity);
+                    GameObject l = (GameObject)Instantiate(LifelineGO, new Vector3(VirtualEnvironment.scale(lifeline.Left), 0, 0), Quaternion.identity);
 
                     //Save lifeline and his Gameobject
                     Lifelines.Add(lifeline, l);
@@ -74,10 +74,10 @@ namespace View
                     Transform line = l.transform.FindChild("Line");
 
                     //Now... set the line height
-                    line.transform.localScale = new Vector3(line.transform.localScale.x, scale(lifeline.Bottom), line.transform.localScale.z);
+                    line.transform.localScale = new Vector3(line.transform.localScale.x, VirtualEnvironment.scale(lifeline.Bottom), line.transform.localScale.z);
 
                     //Set the line position
-                    line.transform.position = new Vector3(line.transform.position.x, -scale(lifeline.Bottom)*0.5f, line.transform.position.z);
+                    line.transform.position = new Vector3(line.transform.position.x, -VirtualEnvironment.scale(lifeline.Bottom) * 0.5f, line.transform.position.z);
 
                     //Set the messagens
                     setMessages();
@@ -110,17 +110,17 @@ namespace View
                             {
                                 //Create Method GameObject Parent
                                 GameObject Method = new GameObject(m.Name);
-                                Method.transform.position = new Vector3(centerMethodName(l.Value.transform.position,ll.Value.transform.position), scale(m.PtStartY) + .25f, l.Value.transform.position.z);
+                                Method.transform.position = new Vector3(centerMethodName(l.Value.transform.position,ll.Value.transform.position), VirtualEnvironment.scale(m.PtStartY) + .25f, l.Value.transform.position.z);
 
                                 //Create binding dynamics with Line Renderer
                                 GameObject LineRendererGO = new GameObject();
                                 LineRendererGO.name = "LineRenderer";
 
                                 LineRenderer LineRenderer = LineRendererGO.AddComponent<LineRenderer>();
-                                LineRenderer.transform.position = new Vector3(l.Value.transform.position.x, scale(m.PtStartY), l.Value.transform.position.z);
+                                LineRenderer.transform.position = new Vector3(l.Value.transform.position.x, VirtualEnvironment.scale(m.PtStartY), l.Value.transform.position.z);
                                 LineRenderer.SetWidth(.05f, .2f);
-                                LineRenderer.SetPosition(0, new Vector3(l.Value.transform.position.x, scale(m.PtStartY), l.Value.transform.position.z));
-                                LineRenderer.SetPosition(1, new Vector3(ll.Value.transform.position.x, scale(m.PtStartY), ll.Value.transform.position.z));
+                                LineRenderer.SetPosition(0, new Vector3(l.Value.transform.position.x, VirtualEnvironment.scale(m.PtStartY), l.Value.transform.position.z));
+                                LineRenderer.SetPosition(1, new Vector3(ll.Value.transform.position.x, VirtualEnvironment.scale(m.PtStartY), ll.Value.transform.position.z));
 
                                 //Set the messages name
                                 GameObject MethodNameGO = new GameObject();
@@ -217,12 +217,6 @@ namespace View
             return r;
         }
         #endregion IfDuplicated
-
-        //Return the scale to Unity
-        private float scale(float n)
-        {
-            return n * 0.02f;
-        }
         #endregion
     }
 }
