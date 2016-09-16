@@ -25,13 +25,23 @@ namespace View {
             //Load XMI file
             ThreeDUML XMI = new ThreeDUML(XMIURL);
 
+            //Esta variável de controle evita de renderizar mais de uma vez o Diagrama de Sequencia... Verificar isso!!!!
+            int loopSeq = 1;
+
             //Open packages
             foreach(Package package in XMI.Packages)
             {
                 //Render Sequence Diagram if exists
                 if (package.SequenceDiagrams.Count > 0)
                 {
-                    addSequenceDiagram(package);
+                    foreach(ThreeDUMLAPI.SequenceDiagram s in package.SequenceDiagrams)
+                    {
+                        if (loopSeq == 1)
+                        {
+                            addSequenceDiagram(package);
+                            loopSeq = 0;
+                        }
+                    }
                 }
             }
 	    }

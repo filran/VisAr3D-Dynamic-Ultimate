@@ -44,46 +44,54 @@ namespace View
         //This main method rendering one sequence diagram
         public void renderSequenceDiagram(Package package)
         {
+            //Esta variável de controle evita de renderizar mais de uma vez o Diagrama de Sequencia... Verificar isso!!!!
+            int loopSeq = 1;
+
             //Show Diagrams
             foreach (ThreeDUMLAPI.SequenceDiagram sequencediagram in package.SequenceDiagrams)
             {
-                //Create Diagram GameObject
-                GameObject Diagram = new GameObject(sequencediagram.Name);
-
-                //Counts
-                float CountLifelines = 0;
-                float AmountLifelines = sequencediagram.CountLifelines;
-
-                //Show Lifelines
-                foreach(Lifeline lifeline in sequencediagram.SoftwareEntities)
+                if (loopSeq == 1)
                 {
-                    //Count
-                    CountLifelines++;
+                    loopSeq = 0;
 
-                    //Render each lifeline
-                    GameObject l = (GameObject)Instantiate(LifelineGO, new Vector3(VirtualEnvironment.scale(lifeline.Left), 0, 0), Quaternion.identity);
+                    //Create Diagram GameObject
+                    GameObject Diagram = new GameObject(sequencediagram.Name);
 
-                    //Save lifeline and his Gameobject
-                    Lifelines.Add(lifeline, l);
+                    //Counts
+                    float CountLifelines = 0;
+                    float AmountLifelines = sequencediagram.CountLifelines;
 
-                    //Set the name to Lifeline GameObject
-                    l.name = lifeline.Name;
-                    l.transform.FindChild("ObjectName").GetComponent<TextMesh>().text = lifeline.Name;
+                    //Show Lifelines
+                    foreach (Lifeline lifeline in sequencediagram.SoftwareEntities)
+                    {
+                        //Count
+                        CountLifelines++;
 
-                    //Find the Line in Lifeline Prefab
-                    Transform line = l.transform.FindChild("Line");
+                        //Render each lifeline
+                        GameObject l = (GameObject)Instantiate(LifelineGO, new Vector3(VirtualEnvironment.scale(lifeline.Left), 0, 0), Quaternion.identity);
 
-                    //Now... set the line height
-                    line.transform.localScale = new Vector3(line.transform.localScale.x, VirtualEnvironment.scale(lifeline.Bottom), line.transform.localScale.z);
+                        //Save lifeline and his Gameobject
+                        Lifelines.Add(lifeline, l);
 
-                    //Set the line position
-                    line.transform.position = new Vector3(line.transform.position.x, -VirtualEnvironment.scale(lifeline.Bottom) * 0.5f, line.transform.position.z);
+                        //Set the name to Lifeline GameObject
+                        l.name = lifeline.Name;
+                        l.transform.FindChild("ObjectName").GetComponent<TextMesh>().text = lifeline.Name;
 
-                    //Set the messagens
-                    setMessages();
+                        //Find the Line in Lifeline Prefab
+                        Transform line = l.transform.FindChild("Line");
 
-                    //Set parent
-                    l.transform.SetParent(Diagram.transform);
+                        //Now... set the line height
+                        line.transform.localScale = new Vector3(line.transform.localScale.x, VirtualEnvironment.scale(lifeline.Bottom), line.transform.localScale.z);
+
+                        //Set the line position
+                        line.transform.position = new Vector3(line.transform.position.x, -VirtualEnvironment.scale(lifeline.Bottom) * 0.5f, line.transform.position.z);
+
+                        //Set the messagens
+                        setMessages();
+
+                        //Set parent
+                        l.transform.SetParent(Diagram.transform);
+                    }
                 }
             }
         }
