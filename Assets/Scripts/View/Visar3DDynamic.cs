@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using ThreeDUMLAPI;
+using System;
 
 namespace View {
     public class Visar3DDynamic : MonoBehaviour
@@ -17,24 +18,27 @@ namespace View {
         #region PUBLIC VARS
         public GameObject LifelineGO; //Lifeline Prefab
         public string XMIURL; //XMI file path 
+        public GameObject PackageDiagramPrefab;
         #endregion
 
         #region UNITY METHODS
-        // Use this for initialization
 	    void Start () {
             //Load XMI file
-            ThreeDUML XMI = new ThreeDUML(XMIURL);
+            XMI = new ThreeDUML(XMIURL);
+
+            addPackageDiagram(new Vector3(0, 2, 0));
 
             //Esta variável de controle evita de renderizar mais de uma vez o Diagrama de Sequencia... Verificar isso!!!!
             int loopSeq = 1;
 
             //Open packages
-            foreach(Package package in XMI.Packages)
+            foreach (KeyValuePair<string, IXmlNode> pair in XMI.Packages)
             {
+                Package package = pair.Value as Package;
                 //Render Sequence Diagram if exists
                 if (package.SequenceDiagrams.Count > 0)
                 {
-                    foreach(ThreeDUMLAPI.SequenceDiagram s in package.SequenceDiagrams)
+                    foreach (ThreeDUMLAPI.SequenceDiagram s in package.SequenceDiagrams)
                     {
                         if (loopSeq == 1)
                         {
@@ -44,16 +48,22 @@ namespace View {
                     }
                 }
             }
-	    }
-	
-	    // Update is called once per frame
-	    void Update () {
-
         }
         #endregion
 
         #region PRIVATE METHODS
-        
+        //Render Package Diagram
+        private void addPackageDiagram()
+        {
+            GameObject packageDiagramGO = (GameObject)Instantiate(PackageDiagramPrefab, Vector3.zero, Quaternion.identity);
+            packageDiagramGO.GetComponent<PackageDiagram>().renderPackageDiagram(XMI.Packages);
+        }
+        private void addPackageDiagram(Vector3 position)
+        {
+            GameObject packageDiagramGO = (GameObject)Instantiate(PackageDiagramPrefab, position, Quaternion.identity);
+            packageDiagramGO.GetComponent<PackageDiagram>().renderPackageDiagram(XMI.Packages);
+        }
+
         //Render Sequence Diagram
         private void addSequenceDiagram(Package package)
         {
@@ -66,7 +76,6 @@ namespace View {
             //Render
             SeqDiagComp.renderSequenceDiagram(package);
         }
-        
         #endregion
     }
 }

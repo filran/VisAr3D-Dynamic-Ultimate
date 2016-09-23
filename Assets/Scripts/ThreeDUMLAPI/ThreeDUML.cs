@@ -17,21 +17,22 @@ namespace ThreeDUMLAPI {
 	public class ThreeDUML : IXmlNode {
 
         public XMI TheXMI;
-        public List<IXmlNode> Packages { get; private set; }
+        public Dictionary<string, IXmlNode> Packages { get; private set; }
 
-        public List<IXmlNode> AllDiagrams { get; private set; }
+        public Dictionary<string, IXmlNode> AllDiagrams { get; private set; }
 
         public Dictionary<string, List<IXmlNode>> AllLinks { get; private set; }
 
 		public ThreeDUML(string url){
             TheXMI = new XMI(@url);
-            Packages = new List<IXmlNode>();
+            //Packages = new Dictionary<string, IXmlNode>();
+            Packages = TheXMI.Packages;
 
             AllDiagrams = TheXMI.Diagrams;
 
             AllLinks = TheXMI.Links;
 
-            AddPackages();
+            //AddPackages();
             AddDiagramsToPackages();
 
             AddClassesToDiagrams();
@@ -96,49 +97,42 @@ namespace ThreeDUMLAPI {
 
         private void AddPackages()
         {
-            foreach(Package p in TheXMI.Packages)
-            {
-                Packages.Add(p);
-            }
+            Packages = TheXMI.Packages;
+            //foreach(Package p in TheXMI.Packages)
+            //{
+            //    if (!Packages.ContainsKey(p.Id))
+            //        Packages.Add(p.Id ,p);
+            //}
         }
 
         private void AddDiagramsToPackages()
         {
-            foreach(Package p in Packages)
+            foreach(KeyValuePair<string, IXmlNode> dig in TheXMI.Diagrams)
             {
-                foreach(Node d in TheXMI.Diagrams)
-                {
-                    if(p.Id == d.IdPackage)
-                    {
-                        if(d.Type == "Logical")
-                        {
-                            p.ClassDiagrams.Add(InterchangeSoftwareEntity(d,new ClassDiagram()));
-                        }
-                        else if (d.Type == "Sequence")
-                        {
-                            p.SequenceDiagrams.Add(InterchangeSoftwareEntity(d, new SequenceDiagram()));
-                        }
-                    }
+                IXmlNode d = dig.Value;
+                Package p = (Package) Packages[d.IdPackage];
+                if(d.Type == "Logical") {
+                    p.ClassDiagrams.Add(InterchangeSoftwareEntity(d,new ClassDiagram()));
+                } else if (d.Type == "Sequence") {
+                    p.SequenceDiagrams.Add(InterchangeSoftwareEntity(d, new SequenceDiagram()));
                 }
             }
         }
 
         private void AddLifelinesToDiagrams()
         {
-            foreach(Package p in Packages)
+            foreach (KeyValuePair<string, IXmlNode> pack in Packages)
             {
-                foreach(SequenceDiagram d in p.SequenceDiagrams)
+                foreach (SequenceDiagram d in ((Package)pack.Value).SequenceDiagrams)
                 {
                     foreach(IXmlNode e in d.ChildNodes)
                     {
-                        foreach(IXmlNode l in TheXMI.Lifelines)
+                        if (TheXMI.Lifelines.ContainsKey(e.Subject))
                         {
-                            if(e.Subject == l.Id)
-                            {
-                                //Debug.Log("Lifeline: " + l.Id + " " + l.Name);
-                                Lifeline thelifeline = new Lifeline();
-                                d.SoftwareEntities.Add(InterchangeSoftwareEntity(l,thelifeline));
-                            }
+                            IXmlNode l = TheXMI.Lifelines[e.Subject];
+                            //Debug.Log("Lifeline: " + l.Id + " " + l.Name);
+                            Lifeline thelifeline = new Lifeline();
+                            d.SoftwareEntities.Add(InterchangeSoftwareEntity(l, thelifeline));
                         }
                     }
                 }
@@ -147,22 +141,23 @@ namespace ThreeDUMLAPI {
 
         private void AddMessagesToLifeline()
         {
-            foreach (Package p in Packages)
+            foreach (KeyValuePair<string, IXmlNode> p in Packages)
             {
-                foreach (SequenceDiagram d in p.SequenceDiagrams)
+                foreach (SequenceDiagram d in ((Package) p.Value).SequenceDiagrams)
                 {
                     foreach (Lifeline l in d.SoftwareEntities)
                     {
                         d.CountLifelines++; //amount life
-                        foreach (IXmlNode m in TheXMI.Messages)
+                        foreach (KeyValuePair<string, IXmlNode> mes in TheXMI.Messages)
                         {
+                            IXmlNode m = mes.Value;
                             if (m.IdSource == l.Id)
                             {
-                                foreach(Lifeline ll in d.SoftwareEntities)
+                                foreach (Lifeline ll in d.SoftwareEntities)
                                 {
-                                    if(m.IdTarget == ll.Id)
+                                    if (m.IdTarget == ll.Id)
                                     {
-                                        if(ll.Left > l.Left)
+                                        if (ll.Left > l.Left)
                                         {
                                             m.Dist = ll.Left - l.Left;
                                             m.Direction = "right";
@@ -190,34 +185,26 @@ namespace ThreeDUMLAPI {
         {
             //Debug.Log("AddClassesToDiagrams");
 
-            foreach(Package p in Packages)
+            foreach (KeyValuePair<string, IXmlNode> pair in Packages)
             {
                 //Debug.Log("\tPackage p in Packages");
 
-                foreach(ClassDiagram d in p.ClassDiagrams)
+                foreach (ClassDiagram d in ((Package) pair.Value).ClassDiagrams)
                 {
                     //Debug.Log("\t\tClassDiagram d in p.ClassDiagrams - qtdChildren:" + d.ChildNodes.Count);
 
                     foreach(IXmlNode e in d.ChildNodes)
                     {
                         //Debug.Log("\t\t\tIXmlNode e in d.ChildNodes");
+                        if (TheXMI.Classes.ContainsKey(e.Subject)) {
+                            IXmlNode c = TheXMI.Classes[e.Subject];
+                            Class theclass = new Class();
+                            theclass.Geometry = e.Geometry;
+                            theclass.Subject = e.Subject;
+                            theclass.Seqno = e.Seqno;
+                            theclass.Style = e.Style;
 
-                        foreach(IXmlNode c in TheXMI.Classes)
-                        {
-                            //Debug.Log("\t\t\t\tIXmlNode c in TheXMI.Classes");
-
-                            if(e.Subject == c.Id)
-                            {
-                                //Debug.Log("\t\t\t\t\te.Subject == c.Id");
-
-                                Class theclass = new Class();
-                                theclass.Geometry = e.Geometry;
-                                theclass.Subject = e.Subject;
-                                theclass.Seqno = e.Seqno;
-                                theclass.Style = e.Style;
-
-                                d.SoftwareEntities.Add(InterchangeSoftwareEntity(c, theclass));
-                            }
+                            d.SoftwareEntities.Add(InterchangeSoftwareEntity(c, theclass));
                         }
                     }
                 }
@@ -228,25 +215,26 @@ namespace ThreeDUMLAPI {
         {
             string s = "";
             //string s = "AddRelationshipsToClassDiagrams\n";
-            foreach(Package p in Packages)
+            foreach (KeyValuePair<string, IXmlNode> pack in Packages)
             {
                 //s += "\tPackage p in Packages\n";
-                foreach(ClassDiagram d in p.ClassDiagrams)
+                foreach (ClassDiagram d in ((Package) pack.Value).ClassDiagrams)
                 {
                     //s += "\t\tClassDiagram d in p.ClassDiagrams\n";
                     //s += "\t\t"+d.Name+" - "+d.Id+"\n";
                     foreach(Class c in d.SoftwareEntities)
                     {
-                        foreach (IXmlNode link in c.Links)
-                        {
-                            //s += "c.Links: " + link.Tag + "\t" + link.Start + "\t" + link.End + "\n";
-                        }
+                        //foreach (IXmlNode link in c.Links)
+                        //{
+                        //    s += "c.Links: " + link.Tag + "\t" + link.Start + "\t" + link.End + "\n";
+                        //}
 
                         //s += "\t\t\tClass c in d.SoftwareEntities\n";
                         //s += "\t\t\t"+c.Name+" - "+c.Id+"\n";
                         //s += "Relationships\n";
-                        foreach (Relationship r in TheXMI.Relationships)
+                        foreach (KeyValuePair<string, IXmlNode> rel in TheXMI.Relationships)
                         {
+                            Relationship r = (Relationship) rel.Value;
                             //s += r.Tag+"\t"+r.Name+"\t"+r.Start+"\t"+r.End+"\n";
 
                             if(c.Id == r.IdSource)
