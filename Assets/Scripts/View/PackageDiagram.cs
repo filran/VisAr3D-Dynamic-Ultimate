@@ -38,15 +38,44 @@ namespace View
                 texts[0].text = p.Name;
                 string bread = " > ";
                 string parent = p.IdPackage;
-                while(parent != null)
+                while (parent != null)
                 {
-                    p = (Package) packages[parent];
+                    p = (Package)packages[parent];
                     bread = " > " + p.Name + bread;
                     parent = p.IdPackage;
                 }
                 texts[1].text = bread;
                 pos += packageDistance;
                 packageGOs.Add(pack.Key, packGO);
+            }
+            return packageGOs;
+        }
+        public Dictionary<string, GameObject> renderPackageDiagram(List<string> ids, Dictionary<string, IXmlNode> packages)
+        {
+            Dictionary<string, GameObject> packageGOs = new Dictionary<string, GameObject>();
+            float pos = 0; // Não encontrei a posição dos pacotes, então tive que criar...
+            foreach (string id in ids)
+            {
+                Package p = packages[id] as Package;
+                //Debug.Log("Pacote " + p.Id + " -- Nome: " + p.Name + " -- Count: " + p.ClassDiagrams.Count + " - " + p.SequenceDiagrams.Count + " >> Package: " + p.IdPackage + "!!");
+
+                GameObject packGO = (GameObject)Instantiate(PackageGO);
+                packGO.transform.parent = transform;
+                packGO.transform.localPosition = new Vector3(pos, 0, 0);
+                packGO.name = p.Name;
+                TextMesh[] texts = packGO.GetComponentsInChildren<TextMesh>();
+                texts[0].text = p.Name;
+                string bread = " > ";
+                string parent = p.IdPackage;
+                while (parent != null)
+                {
+                    p = (Package)packages[parent];
+                    bread = " > " + p.Name + bread;
+                    parent = p.IdPackage;
+                }
+                texts[1].text = bread;
+                pos += packageDistance;
+                packageGOs.Add(id, packGO);
             }
             return packageGOs;
         }
