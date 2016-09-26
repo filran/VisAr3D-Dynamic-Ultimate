@@ -49,7 +49,7 @@ namespace ParserXMI {
                 Links = new Dictionary<string, List<IXmlNode>>();
 
                 ReadNodes(ParserXMI.DocumentElement);
-                FilterPackages();
+                //FilterPackages();
 
                 //test
                 //foreach(KeyValuePair<string, IXmlNode> mes in Messages){
@@ -253,10 +253,12 @@ namespace ParserXMI {
 
         private void BuildPackage(XmlNode node)
         {
-            if (node.Name == "packagedElement" /*&& node.ParentNode.ParentNode.Name == "uml:Model"*/)
+            if (node.Name == "packagedElement" && node.Attributes["xmi:type"].Value == "uml:Package" /*&& node.ParentNode.ParentNode.Name == "uml:Model"*/)
             {
                 IXmlNode n = new Package();
                 AddAttributes(node, n);
+                if (node.ParentNode.Attributes["xmi:id"] != null)
+                    n.IdPackage = node.ParentNode.Attributes["xmi:id"].Value;
                 Packages.Add(n.Id, n);
             }
         } 
@@ -395,7 +397,7 @@ namespace ParserXMI {
             }
         }
 
-            private void AddGeneralizationToRelationships(XmlNode node)
+        private void AddGeneralizationToRelationships(XmlNode node)
         {
             if (node.Name == "connector")
             {
