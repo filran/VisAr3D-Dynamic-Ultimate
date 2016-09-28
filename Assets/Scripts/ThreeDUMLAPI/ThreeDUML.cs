@@ -32,12 +32,14 @@ namespace ThreeDUMLAPI {
 
             AllLinks = TheXMI.Links;
 
-            //AddPackages();
+            //Packages();
             AddDiagramsToPackages();
 
+            //Class Diagram
             AddClassesToDiagrams();
             AddRelationshipsToClassDiagrams();
 
+            //Sequence Diagram
             AddLifelinesToDiagrams();
             AddMessagesToLifeline();
 

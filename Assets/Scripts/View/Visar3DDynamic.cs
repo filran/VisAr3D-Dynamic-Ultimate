@@ -13,6 +13,7 @@ namespace View {
     {
         #region PRIVATE VARS
         private ThreeDUML XMI;
+        private string SequecenDiagramName;
         #endregion
 
         #region PUBLIC VARS
@@ -24,30 +25,53 @@ namespace View {
         #region UNITY METHODS
 	    void Start () {
             //Load XMI file
-            XMI = new ThreeDUML(XMIURL);
+            ThreeDUML XMI = new ThreeDUML(XMIURL);
 
-            addPackageDiagram(new Vector3(0, 2, 0));
+            //@jfportalb verificar este método!
+            //addPackageDiagram(new Vector3(0, 2, 0));
 
             //Esta variável de controle evita de renderizar mais de uma vez o Diagrama de Sequencia... Verificar isso!!!!
             int loopSeq = 1;
 
-            //Open packages
+            //Open packages (to improve this routine because it is repeating below for class diagram)
             foreach (KeyValuePair<string, IXmlNode> pair in XMI.Packages)
             {
                 Package package = pair.Value as Package;
-                //Render Sequence Diagram if exists
+
+                //Render Sequence Diagram if exists and its Class Diagram
                 if (package.SequenceDiagrams.Count > 0)
                 {
                     foreach (ThreeDUMLAPI.SequenceDiagram s in package.SequenceDiagrams)
                     {
                         if (loopSeq == 1)
                         {
-                            addSequenceDiagram(package);
+                            SequecenDiagramName = s.Name;
+                            //addSequenceDiagram(package);
                             loopSeq = 0;
                         }
                     }
                 }
             }
+
+            //Open packages (improve me!!!)
+            foreach (KeyValuePair<string, IXmlNode> pair in XMI.Packages)
+            {
+                Package package = pair.Value as Package;
+
+                //Render Class Diagram if exists
+                if(package.ClassDiagrams.Count > 0)
+                {
+                    foreach (ThreeDUMLAPI.ClassDiagram c in package.ClassDiagrams)
+                    {
+                        //if class diagram's name is equal to seq diagram's name
+                        if(c.Name.Equals(SequecenDiagramName))
+                        {
+                            addClassDiagram(c);
+                        }
+                    }
+                }
+            }
+
         }
         #endregion
 
@@ -76,6 +100,17 @@ namespace View {
             //Render
             SeqDiagComp.renderSequenceDiagram(package);
         }
+
+        //Render Class Diagram
+        private void addClassDiagram(ThreeDUMLAPI.ClassDiagram classdiagram)
+        {
+            //ONE class diagram added
+            ClassDiagram ClassDiagComp = this.gameObject.AddComponent<ClassDiagram>();
+
+            //Render
+            ClassDiagComp.renderClassDiagram(classdiagram);
+        }
+
         #endregion
     }
 }
