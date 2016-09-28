@@ -111,6 +111,10 @@ namespace ParserXMI {
                         n.Type = att.Value;
                         break;
 
+                    case "scope":
+                        n.scope = att.Value;
+                        break;
+
                     case "type":
                         n.Type = att.Value;
                         break;
@@ -195,7 +199,69 @@ namespace ParserXMI {
                 }
             }
         }
+        //Função para percorrer as operações de uma classe
+        private void AddClassOperations(XmlNode node, IXmlNode n)
+        {
+            n.Tag = node.Name;
+            List<IXmlNode> Operations = new List<IXmlNode>();
+            int countC = 0, countP = 0;
+            foreach (XmlNode subnode in node.ChildNodes)
+            {
+                IXmlNode op = new Operation();
+                AddAttributes(subnode, op);
+                //For para achar "Parameters"
+                foreach (XmlNode subsubnode in subnode.ChildNodes)
+                {
+                    if (subsubnode.Name == "parameters")
+                    {
+                        List<IXmlNode> Parameters = new List<IXmlNode>();
+                        //For para ir de parametro em parametro
+                        foreach (XmlNode subsubsubnode in subsubnode.ChildNodes)
+                        {
+                            //for para pegar properties do parametro
+                            foreach (XmlNode subsub_subsubnode in subsubsubnode.ChildNodes)
+                            {
+                                if (subsub_subsubnode.Name == "properties")
+                                {
+                                    IXmlNode param = new Parameter();
+                                    AddAttributes(subsub_subsubnode, param);
+                                    Parameters.Add(param);
+                                    countP++;
+                                    break;
+                                }
+                            }
 
+                        }
+                        op.ClassOperationsParameters = Parameters;
+                        op.ClassOperationsParametersCount = countP;
+                        break;
+                    }
+                }
+                Operations.Add(op);
+                countC++;
+                countP = 0;
+
+            }
+            n.ClassOperations = Operations;
+            n.ClassOperationsCount = countC;
+
+        }
+        //Função para pegar os atributos de uma classe
+        private void AddClassAttributes(XmlNode node, IXmlNode n)
+        {
+            n.Tag = node.Name;
+            List<IXmlNode> Attributes = new List<IXmlNode>();
+            int count = 0;
+            foreach (XmlNode subnode in node.ChildNodes)
+            {
+                IXmlNode op = new Operation();
+                AddAttributes(subnode, op);
+                Attributes.Add(op);
+                count++;
+            }
+            n.ClassAttributes = Attributes;
+            n.ClassAttributesCount = count;
+        }
         private void BreakAttribute(string attr, IXmlNode n)
         {
             char[] char1 = { ';' };
@@ -249,6 +315,7 @@ namespace ParserXMI {
                 }
             }
         }
+
 
 
         private void BuildPackage(XmlNode node)
@@ -346,6 +413,16 @@ namespace ParserXMI {
                     {
                         switch (subnode.Name)
                         {
+                            case "attributes":
+                                AddClassAttributes(subnode, n);
+                                break;
+
+                            case "operations":
+                                AddClassOperations(subnode, n);
+                                //if (n.Name == "FabricaSemanticos")
+                                //    Debug.Log("XMI: " + n.Name + "  <--Nome\n" + n.ClassAttributesCount + "  <--N Att   N Op-> " + n.ClassOperationsCount + "\n\tID:" + n.Id);
+                                break;
+
                             case "model":
                                 AddAttributes(subnode, n);
                                 break;

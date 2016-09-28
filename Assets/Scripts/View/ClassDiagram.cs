@@ -40,6 +40,8 @@ namespace View
             foreach(SoftwareEntity c in classdiagram.SoftwareEntities)
             {
                 print(c.Name);
+                //if (c.Name == "FabricaSemanticos")
+                //    Debug.Log("ClassDiagram: " + c.Name + "  <--Nome\n" + c.ClassAttributesCount + "  <--N Att   N Op--> " + c.ClassOperationsCount + "\n\tID:" + c.Id);
             }
         }
         #endregion

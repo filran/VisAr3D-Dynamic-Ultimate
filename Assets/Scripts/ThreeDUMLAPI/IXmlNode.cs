@@ -57,7 +57,16 @@ namespace ThreeDUMLAPI {
 
         public float Dist { get; set; } //message's distance between lifelines
         public string Direction { get; set; } //To Message: left or right
-              
+
+        //Class Attributes
+        public string scope { get; set; }
+        public int ClassOperationsCount { get; set; }
+        public int ClassOperationsParametersCount { get; set; }
+        public int ClassAttributesCount { get; set; }
+        public List<IXmlNode> ClassOperations { get; set; }
+        public List<IXmlNode> ClassOperationsParameters { get; set; }
+        public List<IXmlNode> ClassAttributes { get; set; }
+        //end of Class Attributes
 
         public List<IXmlNode> ChildNodes { get; set; }
 
