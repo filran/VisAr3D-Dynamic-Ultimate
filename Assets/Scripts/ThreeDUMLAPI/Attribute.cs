@@ -14,7 +14,7 @@ using System.IO;
 
 
 namespace ThreeDUMLAPI {
-	public class Attribute {
+	public class Attribute : SoftwareEntity {
 
 		public Attribute(){
 

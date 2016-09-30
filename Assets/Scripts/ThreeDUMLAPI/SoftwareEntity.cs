@@ -22,10 +22,11 @@ namespace ThreeDUMLAPI {
         public Dictionary<IXmlNode, IXmlNode> Relationships { get; private set; }
         public List<IXmlNode> Methods { get; private set; }
 
-		public SoftwareEntity(){
+        public SoftwareEntity(){
             Relationships = new Dictionary<IXmlNode, IXmlNode>();
             Methods = new List<IXmlNode>();
-		}
+
+        }
                 
         public void AddRelationshipWith(IXmlNode relationship , IXmlNode softwareentity)
         {
@@ -37,7 +38,7 @@ namespace ThreeDUMLAPI {
             Methods.Add(method);
         }
 
-		~SoftwareEntity(){
+        ~SoftwareEntity(){
 
 		}
 

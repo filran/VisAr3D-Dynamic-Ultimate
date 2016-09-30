@@ -94,6 +94,15 @@ namespace ThreeDUMLAPI {
             entity.Dist = old.Dist;
             entity.Direction = old.Direction;
 
+            //Class
+            entity.scope = old.scope;
+            entity.ClassMethodsCount = old.ClassMethodsCount;
+            entity.ClassMethodsParametersCount = old.ClassMethodsParametersCount;
+            entity.ClassAttributesCount = old.ClassAttributesCount;
+            entity.ClassMethods = old.ClassMethods;
+            entity.ClassMethodsParameters = old.ClassMethodsParameters;
+            entity.ClassAttributes = old.ClassAttributes;
+
             return entity;
         }
 

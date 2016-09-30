@@ -60,11 +60,11 @@ namespace ThreeDUMLAPI {
 
         //Class Attributes
         public string scope { get; set; }
-        public int ClassOperationsCount { get; set; }
-        public int ClassOperationsParametersCount { get; set; }
+        public int ClassMethodsCount { get; set; }
+        public int ClassMethodsParametersCount { get; set; }
         public int ClassAttributesCount { get; set; }
-        public List<IXmlNode> ClassOperations { get; set; }
-        public List<IXmlNode> ClassOperationsParameters { get; set; }
+        public List<IXmlNode> ClassMethods { get; set; }
+        public List<IXmlNode> ClassMethodsParameters { get; set; }
         public List<IXmlNode> ClassAttributes { get; set; }
         //end of Class Attributes
 

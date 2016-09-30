@@ -200,15 +200,15 @@ namespace ParserXMI {
             }
         }
         //Função para percorrer as operações de uma classe
-        private void AddClassOperations(XmlNode node, IXmlNode n)
+        private void AddClassMethods(XmlNode node, IXmlNode n)
         {
             n.Tag = node.Name;
-            List<IXmlNode> Operations = new List<IXmlNode>();
-            int countC = 0, countP = 0;
+            List<IXmlNode> Methods = new List<IXmlNode>();
+            int CountM = 0, countP = 0;
             foreach (XmlNode subnode in node.ChildNodes)
             {
-                IXmlNode op = new Operation();
-                AddAttributes(subnode, op);
+                IXmlNode m = new Method();
+                AddAttributes(subnode, m);
                 //For para achar "Parameters"
                 foreach (XmlNode subsubnode in subnode.ChildNodes)
                 {
@@ -232,18 +232,18 @@ namespace ParserXMI {
                             }
 
                         }
-                        op.ClassOperationsParameters = Parameters;
-                        op.ClassOperationsParametersCount = countP;
+                        m.ClassMethodsParameters = Parameters;
+                        m.ClassMethodsParametersCount = countP;
                         break;
                     }
                 }
-                Operations.Add(op);
-                countC++;
+                Methods.Add(m);
+                CountM++;
                 countP = 0;
 
             }
-            n.ClassOperations = Operations;
-            n.ClassOperationsCount = countC;
+            n.ClassMethods = Methods;
+            n.ClassMethodsCount = CountM;
 
         }
         //Função para pegar os atributos de uma classe
@@ -254,9 +254,9 @@ namespace ParserXMI {
             int count = 0;
             foreach (XmlNode subnode in node.ChildNodes)
             {
-                IXmlNode op = new Operation();
-                AddAttributes(subnode, op);
-                Attributes.Add(op);
+                IXmlNode att = new ThreeDUMLAPI.Attribute();
+                AddAttributes(subnode, att);
+                Attributes.Add(att);
                 count++;
             }
             n.ClassAttributes = Attributes;
@@ -418,9 +418,9 @@ namespace ParserXMI {
                                 break;
 
                             case "operations":
-                                AddClassOperations(subnode, n);
+                                AddClassMethods(subnode, n);
                                 //if (n.Name == "FabricaSemanticos")
-                                //    Debug.Log("XMI: " + n.Name + "  <--Nome\n" + n.ClassAttributesCount + "  <--N Att   N Op-> " + n.ClassOperationsCount + "\n\tID:" + n.Id);
+                                //    Debug.Log("XMI: " + n.Name + "  <--Nome\n" + n.ClassAttributesCount + "  <--N Att   N Op-> " + n.ClassMethodsCount + "\n\tID:" + n.Id);
                                 break;
 
                             case "model":
