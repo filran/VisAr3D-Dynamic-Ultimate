@@ -25,9 +25,8 @@ namespace View {
         #region UNITY METHODS
 	    void Start () {
             //Load XMI file
-            ThreeDUML XMI = new ThreeDUML(XMIURL);
-
-            //@jfportalb verificar este método!
+            XMI = new ThreeDUML(XMIURL);
+            
             //addPackageDiagram(new Vector3(0, 2, 0));
 
             //Esta variável de controle evita de renderizar mais de uma vez o Diagrama de Sequencia... Verificar isso!!!!
