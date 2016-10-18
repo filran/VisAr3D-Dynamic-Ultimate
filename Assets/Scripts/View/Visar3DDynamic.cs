@@ -26,7 +26,7 @@ namespace View {
 	    void Start () {
             //Load XMI file
             XMI = new ThreeDUML(XMIURL);
-            
+
             //addPackageDiagram(new Vector3(0, 2, 0));
 
             //Esta variável de controle evita de renderizar mais de uma vez o Diagrama de Sequencia... Verificar isso!!!!
@@ -45,7 +45,7 @@ namespace View {
                         if (loopSeq == 1)
                         {
                             SequecenDiagramName = s.Name;
-                            //addSequenceDiagram(package);
+                            addSequenceDiagram(package);
                             loopSeq = 0;
                         }
                     }
