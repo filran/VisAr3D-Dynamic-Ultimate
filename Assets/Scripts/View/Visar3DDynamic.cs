@@ -17,7 +17,8 @@ namespace View {
         #endregion
 
         #region PUBLIC VARS
-        public GameObject LifelineGO; //Lifeline Prefab
+        public GameObject LifelineGO; //Lifeline Prefab        
+        public GameObject ClassGO; //Class Prefab
         public string XMIURL; //XMI file path 
         public GameObject PackageDiagramPrefab;
         #endregion
@@ -106,8 +107,10 @@ namespace View {
             //ONE class diagram added
             ClassDiagram ClassDiagComp = this.gameObject.AddComponent<ClassDiagram>();
 
+            ClassDiagComp.ClassGO = ClassGO;
+
             //Render
-            ClassDiagComp.renderClassDiagram(classdiagram);
+            ClassDiagComp.renderClassDiagram(classdiagram, XMI.AllMessages);
         }
 
         #endregion

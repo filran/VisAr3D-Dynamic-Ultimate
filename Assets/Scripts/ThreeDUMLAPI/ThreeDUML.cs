@@ -23,7 +23,9 @@ namespace ThreeDUMLAPI {
 
         public Dictionary<string, List<IXmlNode>> AllLinks { get; private set; }
 
-		public ThreeDUML(string url){
+        public Dictionary<string, IXmlNode> AllMessages { get; private set; }
+
+        public ThreeDUML(string url){
             TheXMI = new XMI(@url);
             //Packages = new Dictionary<string, IXmlNode>();
             Packages = TheXMI.Packages;
@@ -31,6 +33,8 @@ namespace ThreeDUMLAPI {
             AllDiagrams = TheXMI.Diagrams;
 
             AllLinks = TheXMI.Links;
+
+            AllMessages = TheXMI.Messages;
 
             //Packages();
             AddDiagramsToPackages();

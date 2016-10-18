@@ -218,6 +218,8 @@ namespace ParserXMI {
                         //For para ir de parametro em parametro
                         foreach (XmlNode subsubsubnode in subsubnode.ChildNodes)
                         {
+                            IXmlNode Parameter = new Parameter();
+                            AddAttributes(subsubsubnode, Parameter);
                             //for para pegar properties do parametro
                             foreach (XmlNode subsub_subsubnode in subsubsubnode.ChildNodes)
                             {
@@ -225,6 +227,7 @@ namespace ParserXMI {
                                 {
                                     IXmlNode param = new Parameter();
                                     AddAttributes(subsub_subsubnode, param);
+                                    param.Id = Parameter.Id;
                                     Parameters.Add(param);
                                     countP++;
                                     break;
@@ -419,8 +422,6 @@ namespace ParserXMI {
 
                             case "operations":
                                 AddClassMethods(subnode, n);
-                                //if (n.Name == "FabricaSemanticos")
-                                //    Debug.Log("XMI: " + n.Name + "  <--Nome\n" + n.ClassAttributesCount + "  <--N Att   N Op-> " + n.ClassMethodsCount + "\n\tID:" + n.Id);
                                 break;
 
                             case "model":
