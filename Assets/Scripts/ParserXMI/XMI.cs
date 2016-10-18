@@ -50,6 +50,11 @@ namespace ParserXMI {
 
                 ReadNodes(ParserXMI.DocumentElement);
                 //FilterPackages();
+                //Debug.Log("Teste lifelines");                
+                //foreach(KeyValuePair<string, IXmlNode> l in Lifelines)
+                //{
+                //    Debug.Log("\tLifeline: " + l.Value.Id);
+                //}
 
                 //test
                 //foreach(KeyValuePair<string, IXmlNode> mes in Messages){
@@ -128,6 +133,10 @@ namespace ParserXMI {
                         break;
 
                     case "name":
+                        n.Name = att.Value;
+                        break;
+
+                    case "classname":
                         n.Name = att.Value;
                         break;
 
@@ -568,6 +577,23 @@ namespace ParserXMI {
             {
                 if(Lifelines.ContainsKey(node.Attributes["subject"].Value))
                     AddAttributes(node , Lifelines[node.Attributes["subject"].Value]);
+            }
+
+            if (node.Name == "element" && node.ParentNode.Name == "elements" && node.ParentNode.ParentNode.Name == "xmi:Extension")
+            {
+                if (Lifelines.ContainsKey(node.Attributes["xmi:idref"].Value))
+                {
+                    //AddAttributes(node, Lifelines[node.Attributes["xmi:idref"].Value]);
+                    foreach(XmlNode subnode in node.ChildNodes)
+                    {
+                        switch(subnode.Name)
+                        {
+                            case "properties":
+                                AddAttributes(subnode, Lifelines[node.Attributes["xmi:idref"].Value]);
+                                break;
+                        }
+                    }
+                }
             }
         }
 
