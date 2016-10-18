@@ -25,6 +25,7 @@ namespace ParserXMI {
         public Dictionary<string, IXmlNode> Relationships { get; private set; }
         public Dictionary<string, IXmlNode> Lifelines { get; private set; }
         public Dictionary<string, IXmlNode> Messages { get; private set; }
+        public Dictionary<string, IXmlNode> MessagesSignatures { get; private set; }
 
         //<XMI:Extension>
         //    <elements>
@@ -46,6 +47,7 @@ namespace ParserXMI {
                 Relationships = new Dictionary<string, IXmlNode>();
                 Lifelines = new Dictionary<string, IXmlNode>();
                 Messages = new Dictionary<string, IXmlNode>();
+                MessagesSignatures = new Dictionary<string, IXmlNode>();
                 Links = new Dictionary<string, List<IXmlNode>>();
 
                 ReadNodes(ParserXMI.DocumentElement);
@@ -125,6 +127,10 @@ namespace ParserXMI {
 
                     case "xmi:idref":
                         n.Id = att.Value;
+                        break;
+
+                    case "signature":
+                        n.Signature = att.Value;
                         break;
 
                     case "name":
@@ -579,6 +585,9 @@ namespace ParserXMI {
                 IXmlNode n = new Method();
                 AddAttributes(node, n);
                 Messages.Add(n.Id, n);
+                Debug.Log("----->" + n.Signature);
+                if (n.Signature != null && MessagesSignatures.ContainsKey(n.Signature)==false)
+                    MessagesSignatures.Add(n.Signature, n);
             }
         }
 

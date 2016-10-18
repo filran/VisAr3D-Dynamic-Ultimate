@@ -110,7 +110,7 @@ namespace View {
             ClassDiagComp.ClassGO = ClassGO;
 
             //Render
-            ClassDiagComp.renderClassDiagram(classdiagram, XMI.AllMessages);
+            ClassDiagComp.renderClassDiagram(classdiagram, XMI.AllMessagesSignatures);
         }
 
         #endregion

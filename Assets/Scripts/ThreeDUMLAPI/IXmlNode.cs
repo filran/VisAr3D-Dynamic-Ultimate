@@ -24,6 +24,7 @@ namespace ThreeDUMLAPI {
         public string Visibility { get; set; }
         public string Represents { get; set; }
         public string IdPackage { get; set; }
+        public string Signature { get; set; }
 
         public string Geometry { get; set; }
         public float Left { get; set; }

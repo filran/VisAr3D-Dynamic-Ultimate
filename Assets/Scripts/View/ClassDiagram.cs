@@ -39,8 +39,12 @@ namespace View
         #region PUBLIC METHODS
 
         //This main method rendering one class diagram
-        public void renderClassDiagram(ThreeDUMLAPI.ClassDiagram classdiagram, Dictionary<string, IXmlNode> AllMessages)
+        public void renderClassDiagram(ThreeDUMLAPI.ClassDiagram classdiagram, Dictionary<string, IXmlNode> AllMessagesSignatures)
         {
+            foreach(string a in AllMessagesSignatures.Keys)
+            {
+                print(a);
+            }
             foreach (Class classe in classdiagram.SoftwareEntities)
             {
                 //print(classe.Name);
@@ -50,6 +54,70 @@ namespace View
                 string atributos = "", metodos = "";
                 c.name = classe.Name;
 
+                if (classe.ClassMethodsCount > 0)
+                {
+                    foreach (Method m in classe.ClassMethods)
+                    {
+                        print(m.Id);
+                        if (AllMessagesSignatures.ContainsKey(m.Id) && m.Name != classe.Name)
+                        {
+                            if(m.scope == "Private")
+                            {
+                                metodos += "-  ";
+                            }
+                            else if (m.scope == "Public")
+                            {
+                                metodos += "+  ";
+                            }
+                            else if (m.scope == "Protected")
+                            {
+                                metodos += "#  ";
+                            }
+                            metodos += (m.Name);
+                            if (m.ClassMethodsParametersCount > 0)
+                            {
+                                string ret = ""; int k = 0; bool tem = false;
+                                metodos += "(";
+                                foreach (Parameter p in m.ClassMethodsParameters)
+                                {
+                                    if (p.Id.Contains("RETURNID"))
+                                    {
+                                        ret = p.Type; k++; tem = true;
+                                    }
+                                    else
+                                    {
+                                        metodos += p.Type;
+                                        k++;
+                                        if (k < m.ClassMethodsParametersCount)
+                                        {
+                                            metodos += ", ";
+                                        }
+                                    }
+                                }
+                                if (tem)
+                                    metodos += "): " + ret + "\n\n";
+                                else
+                                    metodos += ")\n\n";
+                            }
+                            else
+                            {
+                                metodos += "\n";
+                            }
+                        }
+                        else
+                        {
+                            classe.ClassMethodsCount--;
+                        }
+                    }
+                }
+                if (classe.ClassAttributesCount > 0)
+                {
+                    foreach (Attribute at in classe.ClassAttributes)
+                    {
+                        //Debug.Log("AT ---> " + at.Name + "\n\n");
+                        atributos += (at.Name + "\n\n");
+                    }
+                }
                 Transform classBox = c.transform.FindChild("ClassBox");
                 Transform AttributesBox = c.transform.FindChild("AttributesBox");
                 Transform MethodsBox = c.transform.FindChild("MethodsBox");
@@ -69,15 +137,6 @@ namespace View
                 AttributesBox.transform.localScale = new Vector3(AttributesBox.transform.localScale.x, classe.ClassAttributesCount * 0.65f, AttributesBox.transform.localScale.z);
                 AttributesBox.transform.position = new Vector3(AttributesBox.transform.position.x, FirstDiv.position.y - (AttributesBox.localScale.y) * 0.5f - FirstDiv.localScale.y, AttributesBox.transform.position.z);
 
-                //Adicionar for para pegar texto
-                if (classe.ClassAttributesCount > 0)
-                {
-                    foreach (Attribute at in classe.ClassAttributes)
-                    {
-                        //Debug.Log("AT ---> " + at.Name + "\n\n");
-                        atributos += (at.Name + "\n\n");
-                    }
-                }
                 Attributes_text.transform.position = new Vector3(AttributesBox.transform.position.x, AttributesBox.transform.position.y - 0.25f, AttributesBox.transform.position.z - 0.5f);
                 Attributes_text.GetComponent<TextMesh>().text = atributos;
 
@@ -86,45 +145,6 @@ namespace View
                 MethodsBox.transform.localScale = new Vector3(MethodsBox.transform.localScale.x, (classe.ClassMethodsCount) * 0.6f, MethodsBox.transform.localScale.z);
                 MethodsBox.transform.position = new Vector3(MethodsBox.transform.position.x, SecDiv.position.y - (MethodsBox.localScale.y) * 0.5f - SecDiv.localScale.y, MethodsBox.transform.position.z);
 
-                //Adicionar for para pegar texto
-                if (classe.ClassMethodsCount > 0)
-                {
-                    foreach (Method m in classe.ClassMethods)
-                    {
-                        //print("\t" + m.Name);
-
-                        metodos += (m.Name);
-                        if (m.ClassMethodsParametersCount > 0)
-                        {
-                            string ret = ""; int k = 0; bool tem = false;
-                            metodos += "(";
-                            foreach (Parameter p in m.ClassMethodsParameters)
-                            {
-                                if (p.Id.Contains("RETURNID"))
-                                {
-                                    ret = p.Type; k++; tem = true;
-                                }
-                                else
-                                {
-                                    metodos += p.Type;
-                                    k++;
-                                    if (k < m.ClassMethodsParametersCount)
-                                    {
-                                        metodos += ", ";
-                                    }
-                                }
-                            }
-                            if (tem)
-                                metodos += "): " + ret + "\n\n";
-                            else
-                                metodos += ")\n\n";
-                        }
-                        else
-                        {
-                            metodos += "\n";
-                        }
-                    }
-                }
                 Methods_text.transform.position = new Vector3(MethodsBox.transform.position.x, MethodsBox.transform.position.y - 0.25f, MethodsBox.transform.position.z - 0.5f);
                 Methods_text.GetComponent<TextMesh>().text = metodos;
 
