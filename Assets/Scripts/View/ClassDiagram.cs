@@ -14,11 +14,15 @@ namespace View
     {
         #region PRIVATE VARS
         int i = 0;
+        private Dictionary<Class, GameObject> Classes { get; set; } //key:class value:class like gameobject
+                                                                    //origin    destination
+        private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRenderes = new Dictionary<LineRenderer, Dictionary<GameObject, GameObject>>();
 
         #endregion
 
         #region PUBLIC VARS
         public GameObject ClassGO { get; set; } //Prefab
+        public Material lineMaterial;
 
         #endregion
 
@@ -32,25 +36,21 @@ namespace View
         // Update is called once per frame
         void Update()
         {
-
+            UpdateLineRenderer();
         }
         #endregion
 
         #region PUBLIC METHODS
 
+
         //This main method rendering one class diagram
         public void renderClassDiagram(ThreeDUMLAPI.ClassDiagram classdiagram, Dictionary<string, IXmlNode> AllMessagesSignatures)
         {
-            foreach(string a in AllMessagesSignatures.Keys)
-            {
-                print(a);
-            }
+            Classes = new Dictionary<Class, GameObject>();
             foreach (Class classe in classdiagram.SoftwareEntities)
             {
-                //print(classe.Name);
-                //if (classe.Name == "FabricaSemanticos")
-                //    Debug.Log("ClassDiagram: " + classe.Name + "  <--Nome\n" + classe.ClassAttributesCount + "  <--N Att   N Op--> " + classe.ClassMethodsCount + "\n\tID:" + c.Id);
                 GameObject c = (GameObject)Instantiate(ClassGO, new Vector3(i, 0, 0), Quaternion.identity);
+                Classes.Add(classe, c);
                 string atributos = "", metodos = "";
                 c.name = classe.Name;
 
@@ -58,10 +58,10 @@ namespace View
                 {
                     foreach (Method m in classe.ClassMethods)
                     {
-                        print(m.Id);
+                        //print(m.Id);
                         if (AllMessagesSignatures.ContainsKey(m.Id) && m.Name != classe.Name)
                         {
-                            if(m.scope == "Private")
+                            if (m.scope == "Private")
                             {
                                 metodos += "-  ";
                             }
@@ -152,10 +152,58 @@ namespace View
                 i += 7;
 
             }
+
+            foreach (KeyValuePair<Class, GameObject> c in Classes)
+            {
+                string s = c.Key.Name + "\n";
+                foreach (KeyValuePair<IXmlNode, IXmlNode> r in c.Key.Relationships)
+                {
+                    GameObject line = new GameObject("Line Renderer");
+                    line.name = c.Value.name;
+                    Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
+                    print(c.Key.Name + "  " + c.Value.name);
+                    if (r.Value != null)
+                    {
+                        pairs.Add(c.Value, FindClasses(r.Value));
+                        LineRenderes.Add(line.AddComponent<LineRenderer>(), pairs);
+                    }
+                }
+            }
+
         }
         #endregion
 
         #region PRIVATE METHODS
+        GameObject FindClasses(IXmlNode c)
+        {
+            GameObject g = new GameObject("FindClasses");
+
+            foreach (KeyValuePair<Class, GameObject> gg in Classes)
+            {
+                print("C: " + c.Name + " gg.key: " + gg.Key.Name);
+                if (c.Equals(gg.Key))
+                {
+                    print("EQUAL     C: " + c.Name + " gg.key: " + gg.Key.Name);
+                    g = gg.Value;
+                }
+            }
+            return g;
+        }
+        void UpdateLineRenderer()
+        {
+            foreach (KeyValuePair<LineRenderer, Dictionary<GameObject, GameObject>> l in LineRenderes)
+            {
+                foreach (KeyValuePair<GameObject, GameObject> g in l.Value)
+                {
+                    l.Key.SetPosition(0, g.Key.transform.FindChild("secondDivider").position);
+                    l.Key.SetPosition(1, g.Value.transform.FindChild("secondDivider").position);
+                    l.Key.SetWidth(.25f, .25f);
+                    l.Key.material = lineMaterial;
+                    l.Key.SetColors(Color.grey, Color.grey);
+                }
+            }
+        }
+
         #endregion
     }
 }

@@ -585,7 +585,7 @@ namespace ParserXMI {
                 IXmlNode n = new Method();
                 AddAttributes(node, n);
                 Messages.Add(n.Id, n);
-                Debug.Log("----->" + n.Signature);
+                //Debug.Log("----->" + n.Signature);
                 if (n.Signature != null && MessagesSignatures.ContainsKey(n.Signature)==false)
                     MessagesSignatures.Add(n.Signature, n);
             }
