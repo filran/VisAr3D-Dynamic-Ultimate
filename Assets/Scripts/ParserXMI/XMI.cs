@@ -416,6 +416,13 @@ namespace ParserXMI {
                             break;
                     }
                 }
+
+                //Add IdPackage
+                if (node.ParentNode.Name == "packagedElement" && node.ParentNode.Attributes["xmi:type"].Value == "uml:Package")
+                {
+                    n.IdPackage = node.ParentNode.Attributes["xmi:id"].Value;
+                }
+
                 Classes.Add(n.Id, n);  
             }    
         }

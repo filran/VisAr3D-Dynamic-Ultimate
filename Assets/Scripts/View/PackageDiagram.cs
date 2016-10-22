@@ -17,6 +17,7 @@ namespace View
         #region PUBLIC VARS
         public GameObject PackageGO; //Prefab
         public float packageDistance;
+        public Dictionary<string, Dictionary<ThreeDUMLAPI.Package, GameObject>> Packages = new Dictionary<string, Dictionary<Package, GameObject>>();
         #endregion
 
         #region PUBLIC METHODS
@@ -47,6 +48,11 @@ namespace View
                 texts[1].text = bread;
                 pos += packageDistance;
                 packageGOs.Add(pack.Key, packGO);
+
+                //Setting Packages Var
+                Dictionary<ThreeDUMLAPI.Package, GameObject> Pair = new Dictionary<ThreeDUMLAPI.Package, GameObject>();
+                Pair.Add((Package)pack.Value, packGO);
+                Packages.Add(pack.Key, Pair);
             }
             return packageGOs;
         }

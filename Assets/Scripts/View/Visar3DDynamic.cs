@@ -14,9 +14,13 @@ namespace View {
         #region PRIVATE VARS
         private ThreeDUML XMI;
         private string SequecenDiagramName;
+        private Dictionary<ThreeDUMLAPI.Class, GameObject> Classes = new Dictionary<Class, GameObject>();
+        private Dictionary<ThreeDUMLAPI.Lifeline, GameObject> Lifelines = new Dictionary<Lifeline, GameObject>();
         private GameObject LineRendererParent = new GameObject("LineRendererParent"); //Create LineRenderer Parent
-                                                    //origin:Class    destination:Lifeline
+        private Dictionary<string, Dictionary<ThreeDUMLAPI.Package, GameObject>> Packages = new Dictionary<string, Dictionary<Package, GameObject>>();
+                                                //origin:Class    destination:Lifeline
         private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRenderes;
+        private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRendererPackages;
         private int CountPairs = 0;
         #endregion
 
@@ -25,8 +29,6 @@ namespace View {
         public GameObject ClassGO; //Class Prefab
         public string XMIURL; //XMI file path 
         public GameObject PackageDiagramPrefab;
-        public Dictionary<ThreeDUMLAPI.Class, GameObject> Classes = new Dictionary<Class, GameObject>();
-        public Dictionary<ThreeDUMLAPI.Lifeline, GameObject> Lifelines = new Dictionary<Lifeline, GameObject>();
         #endregion
 
         #region UNITY METHODS
@@ -34,8 +36,9 @@ namespace View {
             //Load XMI file
             XMI = new ThreeDUML(XMIURL);
             LineRenderes = new Dictionary<LineRenderer, Dictionary<GameObject, GameObject>>();
+            LineRendererPackages = new Dictionary<LineRenderer, Dictionary<GameObject, GameObject>>();
 
-            //addPackageDiagram(new Vector3(0, 2, 0));
+            addPackageDiagram(new Vector3(0, 2, 0));
 
             //Esta variável de controle evita de renderizar mais de uma vez o Diagrama de Sequencia... Verificar isso!!!!
             int loopSeq = 1;
@@ -80,6 +83,21 @@ namespace View {
             }           
 
             RelationshipBetweenDiagrams();
+
+            //TESTS -------------------------------------------------------------
+            //foreach(KeyValuePair<string,IXmlNode> p in XMI.Packages)
+            //{
+            //    print("Pacote: "+p.Value.Name);
+            //}
+            
+            //foreach(KeyValuePair<ThreeDUMLAPI.Class, GameObject> c in Classes)
+            //{
+            //    if(c.Key.Name.Equals("FabricaSemanticos"))
+            //    {
+            //        print(c.Key.Name + "its package is " + c.Key.IdPackage);
+            //    }
+            //}
+
         }
 
         void Update()
@@ -102,6 +120,8 @@ namespace View {
         {
             GameObject packageDiagramGO = (GameObject)Instantiate(PackageDiagramPrefab, position, Quaternion.identity);
             packageDiagramGO.GetComponent<PackageDiagram>().renderPackageDiagram(XMI.Packages);
+            
+            Packages = packageDiagramGO.GetComponent<PackageDiagram>().Packages;
         }
 
         //Render Sequence Diagram
@@ -152,13 +172,35 @@ namespace View {
 
                         GameObject line = new GameObject("line_"+c.Key.Name);
                         LineRenderer lineRenderer = line.AddComponent<LineRenderer>();
-                        lineRenderer.SetPosition(0, c.Value.transform.FindChild("secondDivider").position);
+                        lineRenderer.SetPosition(0, c.Value.transform.FindChild("firstDivider").position);
                         lineRenderer.SetPosition(1, l.Value.transform.position);
                         lineRenderer.SetWidth(.25f, .25f);
 
                         Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
                         pairs.Add(c.Value, l.Value);
                         LineRenderes.Add(lineRenderer, pairs);
+                    }
+                }
+
+                //Link between classes and packages
+                if (Packages.ContainsKey(c.Key.IdPackage))
+                {
+                    //Find the package by id
+                    Dictionary<ThreeDUMLAPI.Package, GameObject> package = Packages[c.Key.IdPackage];
+
+                    foreach(KeyValuePair<ThreeDUMLAPI.Package, GameObject> p in package)
+                    {
+                        //print("FabricaSemanticos está no pacote "+ p.Key.Name +" com id " + p.Key.Id );
+                        //Create LineRenderer
+                        GameObject line = new GameObject("line_package");
+                        LineRenderer lineRenderer = line.AddComponent<LineRenderer>();
+                        lineRenderer.SetPosition(0, c.Value.transform.FindChild("firstDivider").transform.position);
+                        lineRenderer.SetPosition(1 , p.Value.transform.position);
+                        lineRenderer.SetWidth(.25f, .25f);
+
+                        Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
+                        pairs.Add(c.Value, p.Value);
+                        LineRendererPackages.Add(lineRenderer, pairs);
                     }
                 }
             }
@@ -170,6 +212,7 @@ namespace View {
         {
             if (LineRenderes.Keys.Count > 0 )
             {
+                //Classes and Lifelines
                 foreach (KeyValuePair<LineRenderer, Dictionary<GameObject, GameObject>> l in LineRenderes)
                 {
                     foreach (KeyValuePair<GameObject, GameObject> g in l.Value)
@@ -177,6 +220,17 @@ namespace View {
                         l.Key.SetPosition(0, g.Key.transform.FindChild("firstDivider").position);
                         l.Key.SetPosition(1, g.Value.transform.position);
                         l.Key.SetWidth(.25f, .25f);
+                    }
+                }
+
+                //Classes and Packages
+                foreach (KeyValuePair<LineRenderer, Dictionary<GameObject, GameObject>> lp in LineRendererPackages)
+                {
+                    foreach (KeyValuePair<GameObject, GameObject> gg in lp.Value)
+                    {
+                        lp.Key.SetPosition(0, gg.Key.transform.FindChild("firstDivider").position); //class
+                        lp.Key.SetPosition(1, gg.Value.transform.position); //package
+                        lp.Key.SetWidth(.25f, .25f);
                     }
                 }
             }
