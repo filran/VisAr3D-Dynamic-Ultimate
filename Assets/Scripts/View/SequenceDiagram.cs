@@ -13,14 +13,14 @@ namespace View
     {
         #region PRIVATE VARS
         //This variable save a couple lifelines
-        private Dictionary<Lifeline , GameObject> Lifelines = new Dictionary<Lifeline,GameObject>();
-        //This variable save a couple lifelines
         private Dictionary<Method, GameObject> Methods = new Dictionary<Method, GameObject>();
         //Start Update line renderer
         private bool UpdateLineRenderer = false;
         #endregion
 
         #region PUBLIC VARS
+        //This variable save a couple lifelines
+        public Dictionary<Lifeline, GameObject> Lifelines = new Dictionary<Lifeline, GameObject>();
         public GameObject LifelineGO { get; set; } //Prefab
         #endregion
 
@@ -50,6 +50,8 @@ namespace View
             //Show Diagrams
             foreach (ThreeDUMLAPI.SequenceDiagram sequencediagram in package.SequenceDiagrams)
             {
+                //Lifelines = new Dictionary<Lifeline, GameObject>();
+
                 if (loopSeq == 1)
                 {
                     loopSeq = 0;

@@ -14,16 +14,15 @@ namespace View
     {
         #region PRIVATE VARS
         int i = 0;
-        private Dictionary<Class, GameObject> Classes { get; set; } //key:class value:class like gameobject
                                                                     //origin    destination
         private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRenderes = new Dictionary<LineRenderer, Dictionary<GameObject, GameObject>>();
 
         #endregion
 
         #region PUBLIC VARS
+        public Dictionary<Class, GameObject> Classes = new Dictionary<Class, GameObject>(); //key:class value:class like gameobject
         public GameObject ClassGO { get; set; } //Prefab
-        public Material lineMaterial;
-
+        //public Material lineMaterial;
         #endregion
 
         #region UNITY METHODS
@@ -46,7 +45,7 @@ namespace View
         //This main method rendering one class diagram
         public void renderClassDiagram(ThreeDUMLAPI.ClassDiagram classdiagram, Dictionary<string, IXmlNode> AllMessagesSignatures)
         {
-            Classes = new Dictionary<Class, GameObject>();
+            //Classes = new Dictionary<Class, GameObject>();
             foreach (Class classe in classdiagram.SoftwareEntities)
             {
                 GameObject c = (GameObject)Instantiate(ClassGO, new Vector3(i, 0, 0), Quaternion.identity);
@@ -161,7 +160,7 @@ namespace View
                     GameObject line = new GameObject("Line Renderer");
                     line.name = c.Value.name;
                     Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
-                    print(c.Key.Name + "  " + c.Value.name);
+                    //print(c.Key.Name + "  " + c.Value.name);
                     if (r.Value != null)
                     {
                         pairs.Add(c.Value, FindClasses(r.Value));
@@ -180,10 +179,10 @@ namespace View
 
             foreach (KeyValuePair<Class, GameObject> gg in Classes)
             {
-                print("C: " + c.Name + " gg.key: " + gg.Key.Name);
+                //print("C: " + c.Name + " gg.key: " + gg.Key.Name);
                 if (c.Equals(gg.Key))
                 {
-                    print("EQUAL     C: " + c.Name + " gg.key: " + gg.Key.Name);
+                    //print("EQUAL     C: " + c.Name + " gg.key: " + gg.Key.Name);
                     g = gg.Value;
                 }
             }
@@ -198,7 +197,7 @@ namespace View
                     l.Key.SetPosition(0, g.Key.transform.FindChild("secondDivider").position);
                     l.Key.SetPosition(1, g.Value.transform.FindChild("secondDivider").position);
                     l.Key.SetWidth(.25f, .25f);
-                    l.Key.material = lineMaterial;
+                    //l.Key.material = lineMaterial;
                     l.Key.SetColors(Color.grey, Color.grey);
                 }
             }

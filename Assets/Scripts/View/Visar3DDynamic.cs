@@ -14,6 +14,10 @@ namespace View {
         #region PRIVATE VARS
         private ThreeDUML XMI;
         private string SequecenDiagramName;
+        private GameObject LineRendererParent = new GameObject("LineRendererParent"); //Create LineRenderer Parent
+                                                    //origin:Class    destination:Lifeline
+        private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRenderes;
+        private int CountPairs = 0;
         #endregion
 
         #region PUBLIC VARS
@@ -21,12 +25,15 @@ namespace View {
         public GameObject ClassGO; //Class Prefab
         public string XMIURL; //XMI file path 
         public GameObject PackageDiagramPrefab;
+        public Dictionary<ThreeDUMLAPI.Class, GameObject> Classes = new Dictionary<Class, GameObject>();
+        public Dictionary<ThreeDUMLAPI.Lifeline, GameObject> Lifelines = new Dictionary<Lifeline, GameObject>();
         #endregion
 
         #region UNITY METHODS
 	    void Start () {
             //Load XMI file
             XMI = new ThreeDUML(XMIURL);
+            LineRenderes = new Dictionary<LineRenderer, Dictionary<GameObject, GameObject>>();
 
             //addPackageDiagram(new Vector3(0, 2, 0));
 
@@ -70,8 +77,17 @@ namespace View {
                         }
                     }
                 }
-            }
+            }           
 
+            RelationshipBetweenDiagrams();
+        }
+
+        void Update()
+        {
+            if(CountPairs.Equals(LineRenderes.Keys.Count))
+            {
+                UpdateLineRenderer();
+            }
         }
         #endregion
 
@@ -99,6 +115,9 @@ namespace View {
 
             //Render
             SeqDiagComp.renderSequenceDiagram(package);
+
+            //Save the lifelines
+            Lifelines = SeqDiagComp.Lifelines;
         }
 
         //Render Class Diagram
@@ -111,6 +130,56 @@ namespace View {
 
             //Render
             ClassDiagComp.renderClassDiagram(classdiagram, XMI.AllMessagesSignatures);
+
+            //Save the classes
+            Classes = ClassDiagComp.Classes;
+        }
+
+        //RelationshipBetweenDiagrams (Linerenderes)
+        private void RelationshipBetweenDiagrams()
+        {
+            string equals = "";
+            int count = 0;
+
+            foreach (KeyValuePair<Class, GameObject> c in Classes)
+            {
+                foreach (KeyValuePair<ThreeDUMLAPI.Lifeline, GameObject> l in Lifelines)
+                {
+                    if (c.Key.Name.Equals(l.Key.Name)) //Is it equal?
+                    {
+                        equals += c.Key.Name + " class = " + l.Key.Name + " lifeline"+"\n";
+                        count++;
+
+                        GameObject line = new GameObject("line_"+c.Key.Name);
+                        LineRenderer lineRenderer = line.AddComponent<LineRenderer>();
+                        lineRenderer.SetPosition(0, c.Value.transform.FindChild("secondDivider").position);
+                        lineRenderer.SetPosition(1, l.Value.transform.position);
+                        lineRenderer.SetWidth(.25f, .25f);
+
+                        Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
+                        pairs.Add(c.Value, l.Value);
+                        LineRenderes.Add(lineRenderer, pairs);
+                    }
+                }
+            }
+            CountPairs = count;
+            //print("EQUALS\n"+equals);
+        }
+
+        private void UpdateLineRenderer()
+        {
+            if (LineRenderes.Keys.Count > 0 )
+            {
+                foreach (KeyValuePair<LineRenderer, Dictionary<GameObject, GameObject>> l in LineRenderes)
+                {
+                    foreach (KeyValuePair<GameObject, GameObject> g in l.Value)
+                    {
+                        l.Key.SetPosition(0, g.Key.transform.FindChild("firstDivider").position);
+                        l.Key.SetPosition(1, g.Value.transform.position);
+                        l.Key.SetWidth(.25f, .25f);
+                    }
+                }
+            }
         }
 
         #endregion
