@@ -45,10 +45,17 @@ namespace View
         //This main method rendering one class diagram
         public void renderClassDiagram(ThreeDUMLAPI.ClassDiagram classdiagram, Dictionary<string, IXmlNode> AllMessagesSignatures)
         {
+            //print("Diagrama\tNome:" + classdiagram.Name + "\tID:" + classdiagram.Id + "\n");
+
             //Classes = new Dictionary<Class, GameObject>();
             foreach (Class classe in classdiagram.SoftwareEntities)
             {
-                GameObject c = (GameObject)Instantiate(ClassGO, new Vector3(i, 0, 0), Quaternion.identity);
+                print(classe.Name+"\t\t"+classe.Id);
+
+                float left = VirtualEnvironment.scale(classe.Position[classdiagram.Id]["Left"]);
+                float top = -VirtualEnvironment.scale(classe.Position[classdiagram.Id]["Top"]);
+
+                GameObject c = (GameObject)Instantiate(ClassGO, new Vector3(left, top, 0), Quaternion.identity);
                 Classes.Add(classe, c);
                 string atributos = "", metodos = "";
                 c.name = classe.Name;

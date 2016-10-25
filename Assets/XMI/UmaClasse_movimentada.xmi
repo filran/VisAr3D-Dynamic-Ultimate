@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<xmi:XMI xmi:version="2.1" xmlns:uml="http://schema.omg.org/spec/UML/2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1">
+	<xmi:Documentation exporter="Enterprise Architect" exporterVersion="6.5"/>
+	<uml:Model xmi:type="uml:Model" name="EA_Model" visibility="public">
+		<packagedElement xmi:type="uml:Package" xmi:id="EAPK_21A55F54_1F83_42cc_A776_AC540CA1059F" name="Class Model" visibility="public">
+			<packagedElement xmi:type="uml:Class" xmi:id="EAID_F0C48BD9_3923_4124_BCEC_834A9001DA85" name="Class1" visibility="public"/>
+			<packagedElement xmi:type="uml:Class" xmi:id="EAID_7F572E21_641F_417f_886B_FBF25C91E519" name="Class2" visibility="public">
+				<generalization xmi:type="uml:Generalization" xmi:id="EAID_CDD3D28A_3884_42b4_B984_7E14EDE2592B" general="EAID_F0C48BD9_3923_4124_BCEC_834A9001DA85"/>
+			</packagedElement>
+		</packagedElement>
+	</uml:Model>
+	<xmi:Extension extender="Enterprise Architect" extenderID="6.5">
+		<elements>
+			<element xmi:idref="EAPK_21A55F54_1F83_42cc_A776_AC540CA1059F" xmi:type="uml:Package" name="Class Model" scope="public">
+				<model package2="EAID_21A55F54_1F83_42cc_A776_AC540CA1059F" package="EAPK_7505519D_C01A_4b47_A58A_107ACE0864DF" tpos="6" ea_localid="2" ea_eleType="package"/>
+				<properties isSpecification="false" sType="Package" nType="0" scope="public"/>
+				<project author="Filipe" phase="1.0" created="2016-10-24 14:47:01" modified="2016-10-24 14:47:01" complexity="1" status="Proposed"/>
+				<code/>
+				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+				<tags/>
+				<xrefs/>
+				<extendedProperties tagged="0" package_name="Model"/>
+				<packageproperties tpos="6"/>
+				<paths/>
+				<times created="2016-10-24 14:47:01" modified="2016-10-24 14:47:01" lastloaddate="2016-10-24 14:47:01" lastsavedate="2016-10-24 14:47:01"/>
+				<flags iscontrolled="FALSE" isnamespace="1" isprotected="FALSE" batchsave="0" batchload="0" usedtd="FALSE" logxml="FALSE" packageFlags="isModel=1;VICON=3;"/>
+			</element>
+			<element xmi:idref="EAID_F0C48BD9_3923_4124_BCEC_834A9001DA85" xmi:type="uml:Class" name="Class1" scope="public">
+				<model package="EAPK_21A55F54_1F83_42cc_A776_AC540CA1059F" tpos="0" ea_localid="14" ea_eleType="element"/>
+				<properties isSpecification="false" sType="Class" nType="0" scope="public" isRoot="false" isLeaf="false" isAbstract="false" isActive="false"/>
+				<project author="Filipe" version="1.0" phase="1.0" created="2016-10-24 14:47:32" modified="2016-10-24 14:47:32" complexity="1" status="Proposed"/>
+				<code gentype="Java"/>
+				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+				<tags/>
+				<xrefs/>
+				<extendedProperties tagged="0" package_name="Class Model"/>
+				<links>
+					<Generalization xmi:id="EAID_CDD3D28A_3884_42b4_B984_7E14EDE2592B" start="EAID_7F572E21_641F_417f_886B_FBF25C91E519" end="EAID_F0C48BD9_3923_4124_BCEC_834A9001DA85"/>
+				</links>
+			</element>
+			<element xmi:idref="EAID_7F572E21_641F_417f_886B_FBF25C91E519" xmi:type="uml:Class" name="Class2" scope="public">
+				<model package="EAPK_21A55F54_1F83_42cc_A776_AC540CA1059F" tpos="0" ea_localid="15" ea_eleType="element"/>
+				<properties isSpecification="false" sType="Class" nType="0" scope="public" isRoot="false" isLeaf="false" isAbstract="false" isActive="false"/>
+				<project author="Filipe" version="1.0" phase="1.0" created="2016-10-24 14:50:15" modified="2016-10-24 14:50:15" complexity="1" status="Proposed"/>
+				<code gentype="Java"/>
+				<style appearance="BackColor=-1;BorderColor=-1;BorderWidth=-1;FontColor=-1;VSwimLanes=1;HSwimLanes=1;BorderStyle=0;"/>
+				<tags/>
+				<xrefs/>
+				<extendedProperties tagged="0" package_name="Class Model"/>
+				<links>
+					<Generalization xmi:id="EAID_CDD3D28A_3884_42b4_B984_7E14EDE2592B" start="EAID_7F572E21_641F_417f_886B_FBF25C91E519" end="EAID_F0C48BD9_3923_4124_BCEC_834A9001DA85"/>
+				</links>
+			</element>
+		</elements>
+		<connectors>
+			<connector xmi:idref="EAID_CDD3D28A_3884_42b4_B984_7E14EDE2592B">
+				<source xmi:idref="EAID_7F572E21_641F_417f_886B_FBF25C91E519">
+					<model ea_localid="15" type="Class" name="Class2"/>
+					<role visibility="Public" targetScope="instance"/>
+					<type aggregation="none" containment="Unspecified"/>
+					<constraints/>
+					<modifiers isOrdered="false" changeable="none" isNavigable="false"/>
+					<style value="Union=0;Derived=0;AllowDuplicates=0;"/>
+					<documentation/>
+					<xrefs/>
+					<tags/>
+				</source>
+				<target xmi:idref="EAID_F0C48BD9_3923_4124_BCEC_834A9001DA85">
+					<model ea_localid="14" type="Class" name="Class1"/>
+					<role visibility="Public" targetScope="instance"/>
+					<type aggregation="none" containment="Unspecified"/>
+					<constraints/>
+					<modifiers isOrdered="false" changeable="none" isNavigable="true"/>
+					<style value="Union=0;Derived=0;AllowDuplicates=0;"/>
+					<documentation/>
+					<xrefs/>
+					<tags/>
+				</target>
+				<model ea_localid="6"/>
+				<properties ea_type="Generalization" direction="Source -&gt; Destination"/>
+				<parameterSubstitutions/>
+				<documentation/>
+				<appearance linemode="3" linecolor="-1" linewidth="0" seqno="0" headStyle="0" lineStyle="0"/>
+				<labels/>
+				<extendedProperties virtualInheritance="0"/>
+				<style/>
+				<xrefs/>
+				<tags/>
+			</connector>
+		</connectors>
+		<primitivetypes>
+			<packagedElement xmi:type="uml:Package" xmi:id="EAPrimitiveTypesPackage" name="EA_PrimitiveTypes_Package" visibility="public"/>
+		</primitivetypes>
+		<profiles/>
+		<diagrams>
+			<diagram xmi:id="EAID_8F91A5F2_FDF5_418f_A938_12AED6946FEB">
+				<model package="EAPK_21A55F54_1F83_42cc_A776_AC540CA1059F" localID="4" owner="EAPK_21A55F54_1F83_42cc_A776_AC540CA1059F"/>
+				<properties name="Class Model" type="Logical"/>
+				<project author="Filipe" version="1.0" created="2016-10-24 14:47:28" modified="2016-10-24 14:50:51"/>
+				<style1 value="ShowPrivate=1;ShowProtected=1;ShowPublic=1;HideRelationships=0;Locked=0;Border=1;HighlightForeign=1;PackageContents=1;SequenceNotes=0;ScalePrintImage=0;PPgs.cx=1;PPgs.cy=1;DocSize.cx=827;DocSize.cy=1169;ShowDetails=0;Orientation=P;Zoom=100;ShowTags=0;OpParams=1;VisibleAttributeDetail=0;ShowOpRetType=1;ShowIcons=1;CollabNums=0;HideProps=0;ShowReqs=0;ShowCons=0;PaperSize=9;HideParents=0;UseAlias=0;HideAtts=0;HideOps=0;HideStereo=0;HideElemStereo=0;ShowTests=0;ShowMaint=0;ConnectorNotation=UML 2.1;ExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;ShowNotes=0;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;"/>
+				<style2 value="ExcludeRTF=0;DocAll=0;HideQuals=0;AttPkg=1;ShowTests=0;ShowMaint=0;SuppressFOC=1;MatrixActive=0;SwimlanesActive=1;KanbanActive=0;MatrixLineWidth=1;MatrixLineClr=0;MatrixLocked=0;TConnectorNotation=UML 2.1;TExplicitNavigability=0;AdvancedElementProps=1;AdvancedFeatureProps=1;AdvancedConnectorProps=1;ProfileData=;MDGDgm=;STBLDgm=;ShowNotes=0;VisibleAttributeDetail=0;ShowOpRetType=1;SuppressBrackets=0;SuppConnectorLabels=0;PrintPageHeadFoot=0;ShowAsList=0;SuppressedCompartments=;SaveTag=0C503755;"/>
+				<swimlanes value="locked=false;orientation=0;width=0;inbar=false;names=false;color=-1;bold=false;fcol=0;tcol=-1;ofCol=-1;hl=1;cls=0;SwimlaneFont=lfh:-10,lfw:0,lfi:0,lfu:0,lfs:0,lfface:ARIAL,lfe:0,lfo:0,lfchar:1,lfop:0,lfcp:0,lfq:0,lfpf=0,lfWidth=0;"/>
+				<matrixitems value="locked=false;matrixactive=false;swimlanesactive=true;kanbanactive=false;width=1;clrLine=0;"/>
+				<extendedProperties/>
+				<elements>
+					<element geometry="Left=416;Top=212;Right=506;Bottom=282;" subject="EAID_7F572E21_641F_417f_886B_FBF25C91E519" seqno="1" style="DUID=ADEEBC93;"/>
+					<element geometry="Left=318;Top=63;Right=408;Bottom=133;" subject="EAID_F0C48BD9_3923_4124_BCEC_834A9001DA85" seqno="2" style="DUID=4946DE7B;"/>
+					<element geometry="SX=0;SY=0;EX=0;EY=0;EDGE=1;$LLB=;LLT=;LMT=;LMB=;LRT=;LRB=;IRHS=;ILHS=;Path=;" subject="EAID_CDD3D28A_3884_42b4_B984_7E14EDE2592B" style="Mode=3;EOID=4946DE7B;SOID=ADEEBC93;Color=-1;LWidth=0;Hidden=0;"/>
+				</elements>
+			</diagram>
+		</diagrams>
+	</xmi:Extension>
+</xmi:XMI>

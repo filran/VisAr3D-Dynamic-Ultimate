@@ -96,6 +96,7 @@ namespace ParserXMI {
                 BuildRelationshipLink(n);
                 BuildRelationshipConnector(n);
                 BuildLinks(n);
+                BuildPositions(n);
 
                 //TO LIFELINE
                 BuildLifeline(n);
@@ -568,6 +569,38 @@ namespace ParserXMI {
                             links.Add(l);
                         }
                         Links.Add(c.Id, links);
+                    }
+                }
+            }
+        }
+
+        private void BuildPositions(XmlNode node)
+        {
+            if(node.Name.Equals("element") && node.ParentNode.Name.Equals("elements") && node.ParentNode.ParentNode.Name.Equals("diagram"))
+            {
+                string diagramid = node.ParentNode.ParentNode.Attributes["xmi:id"].Value;
+                if( Diagrams.ContainsKey(diagramid) )
+                {
+                    IXmlNode d = Diagrams[diagramid];
+                    if(d.Type.Equals("Logical")) //somente diagrama de classes
+                    {
+                        if(Classes.ContainsKey(node.Attributes["subject"].Value))
+                        {
+                            IXmlNode c = Classes[node.Attributes["subject"].Value];
+                            
+                            Dictionary<string, float> position = new Dictionary<string, float>();
+                            position.Add("Left",c.Left);
+                            position.Add("Right", c.Right);
+                            position.Add("Top", c.Top);
+                            position.Add("Bottom", c.Bottom);
+
+                            c.Position.Add(diagramid,position);
+
+                            if (diagramid.Equals("EAID_FDB20CAB_A49E_4cf6_B878_B1981C9E037A"))
+                            {
+                                //Debug.Log("POSITION! Diagram:" + d.Name + "\tClasse:" + c.Name + "\tLeft:" + c.Left + "\tRight:" + c.Right + "\tTop:" + c.Top + "\tBottom:" + c.Bottom);
+                            }
+                        }
                     }
                 }
             }

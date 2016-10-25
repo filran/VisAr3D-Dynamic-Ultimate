@@ -57,7 +57,7 @@ namespace ThreeDUMLAPI {
                     _return_ += "\t"+ ll.Tag+"\t"+ll.Id+"\t"+ll.Start+"\t"+ll.End+"\n";
                 }
             }
-            Debug.Log(_return_);
+            //Debug.Log(_return_);
         }
 
         //TROCA DE VALROES ENTRE AS CLASSES
@@ -106,6 +106,7 @@ namespace ThreeDUMLAPI {
             entity.ClassMethods = old.ClassMethods;
             entity.ClassMethodsParameters = old.ClassMethodsParameters;
             entity.ClassAttributes = old.ClassAttributes;
+            entity.Position = old.Position;
 
             return entity;
         }
@@ -293,7 +294,7 @@ namespace ThreeDUMLAPI {
             //    Debug.Log(r.Name + " | " + r.Id + " | " + r.EA_Type + " | " + r.Aggregation + " | source: " + r.IdSource + " | target: " + r.IdTarget);
             //}
 
-            Debug.Log(s);
+            //Debug.Log(s);
         }
 
         ~ThreeDUML()
