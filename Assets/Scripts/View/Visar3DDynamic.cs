@@ -80,7 +80,7 @@ namespace View {
                         }
                     }
                 }
-            }           
+            }
 
             RelationshipBetweenDiagrams();
 
@@ -102,7 +102,7 @@ namespace View {
 
         void Update()
         {
-            if(CountPairs.Equals(LineRenderes.Keys.Count))
+            if (CountPairs.Equals(LineRenderes.Keys.Count))
             {
                 UpdateLineRenderer();
             }

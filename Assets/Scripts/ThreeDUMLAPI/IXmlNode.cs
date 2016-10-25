@@ -32,6 +32,10 @@ namespace ThreeDUMLAPI {
         public float Right { get; set; }
         public float Bottom { get; set; }
 
+        //salvar Left, Top, Right e Bottom por Diagrama
+        //        id do diagrama      (Left,Right...) valor
+        public Dictionary<string, Dictionary<string, float>> Position { get; set; }
+
         public string Subject { get; set; }
         public string Seqno { get; set; }
         public string Style { get; set; }
@@ -76,6 +80,7 @@ namespace ThreeDUMLAPI {
 		public IXmlNode(){
             ChildNodes = new List<IXmlNode>();
             Links = new List<IXmlNode>();
+            Position = new Dictionary<string, Dictionary<string, float>>();
 		}
 
         public virtual void Add(IXmlNode node)

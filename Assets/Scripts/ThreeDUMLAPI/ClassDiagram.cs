@@ -15,10 +15,11 @@ using System.IO;
 
 using ThreeDUMLAPI;
 namespace ThreeDUMLAPI {
-	public class ClassDiagram : Diagram {
+	public class ClassDiagram : Diagram
+    {
 
-		public ClassDiagram(){
-
+        public ClassDiagram(){
+            
 		}
 
 		~ClassDiagram(){
