@@ -191,6 +191,7 @@ namespace View
 
             foreach (KeyValuePair<Class, GameObject> gg in Classes)
             {
+                g.transform.parent = gg.Value.transform;
                 //print("C: " + c.Name + " gg.key: " + gg.Key.Name);
                 if (c.Equals(gg.Key))
                 {
@@ -207,7 +208,7 @@ namespace View
             {
                 foreach (KeyValuePair<GameObject, GameObject> g in l.Value)
                 {
-					l.Key.transform.parent = g.Key.transform;
+                    l.Key.transform.parent = g.Key.transform;
                     if(g.Key.name == "Ambiente")
                     Debug.Log(g.Key.name + "->" + g.Value.name);
                     l.Key.SetPosition(0, g.Key.transform.FindChild("firstDivider").position);
