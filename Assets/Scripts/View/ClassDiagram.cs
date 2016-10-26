@@ -13,7 +13,7 @@ namespace View
     public class ClassDiagram : MonoBehaviour
     {
         #region PRIVATE VARS
-        int i = 0;
+        float i = 0;
                                                                     //origin    destination
         private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRenderes = new Dictionary<LineRenderer, Dictionary<GameObject, GameObject>>();
 
@@ -56,6 +56,8 @@ namespace View
                 float top = -VirtualEnvironment.scale(classe.Position[classdiagram.Id]["Top"]);
 
                 GameObject c = (GameObject)Instantiate(ClassGO, new Vector3(left, top, 0), Quaternion.identity);
+                c.AddComponent<CollisionDetection>().i = i; //Add collision
+
                 Classes.Add(classe, c);
                 string atributos = "", metodos = "";
                 c.name = classe.Name;
@@ -125,11 +127,11 @@ namespace View
                     }
                 }
                 Transform classBox = c.transform.FindChild("ClassBox");
-                Transform AttributesBox = c.transform.FindChild("AttributesBox");
+                //Transform AttributesBox = c.transform.FindChild("AttributesBox");
                 Transform MethodsBox = c.transform.FindChild("MethodsBox");
                 Transform FirstDiv = c.transform.FindChild("firstDivider");
-                Transform SecDiv = c.transform.FindChild("secondDivider");
-                Transform Attributes_text = c.transform.FindChild("Attributes_text");
+                //Transform SecDiv = c.transform.FindChild("secondDivider");
+                //Transform Attributes_text = c.transform.FindChild("Attributes_text");
                 Transform Methods_text = c.transform.FindChild("Methods_text");
                 Transform className = c.transform.FindChild("className");
 
@@ -140,22 +142,22 @@ namespace View
 
                 FirstDiv.transform.position = new Vector3(FirstDiv.transform.position.x, classBox.transform.position.y - (classBox.localScale.y) * 0.5f, FirstDiv.transform.position.z);
 
-                AttributesBox.transform.localScale = new Vector3(AttributesBox.transform.localScale.x, classe.ClassAttributesCount * 0.65f, AttributesBox.transform.localScale.z);
-                AttributesBox.transform.position = new Vector3(AttributesBox.transform.position.x, FirstDiv.position.y - (AttributesBox.localScale.y) * 0.5f - FirstDiv.localScale.y, AttributesBox.transform.position.z);
+                //AttributesBox.transform.localScale = new Vector3(AttributesBox.transform.localScale.x, classe.ClassAttributesCount * 0.65f, AttributesBox.transform.localScale.z);
+                //AttributesBox.transform.position = new Vector3(AttributesBox.transform.position.x, FirstDiv.position.y - (AttributesBox.localScale.y) * 0.5f - FirstDiv.localScale.y, AttributesBox.transform.position.z);
 
-                Attributes_text.transform.position = new Vector3(AttributesBox.transform.position.x, AttributesBox.transform.position.y - 0.25f, AttributesBox.transform.position.z - 0.5f);
-                Attributes_text.GetComponent<TextMesh>().text = atributos;
+                //Attributes_text.transform.position = new Vector3(AttributesBox.transform.position.x, AttributesBox.transform.position.y - 0.25f, AttributesBox.transform.position.z - 0.5f);
+                //Attributes_text.GetComponent<TextMesh>().text = atributos;
 
-                SecDiv.transform.position = new Vector3(SecDiv.transform.position.x, AttributesBox.transform.position.y - (AttributesBox.localScale.y) * 0.5f, SecDiv.transform.position.z);
+                //SecDiv.transform.position = new Vector3(SecDiv.transform.position.x, AttributesBox.transform.position.y - (AttributesBox.localScale.y) * 0.5f, SecDiv.transform.position.z);
 
                 MethodsBox.transform.localScale = new Vector3(MethodsBox.transform.localScale.x, (classe.ClassMethodsCount) * 0.6f, MethodsBox.transform.localScale.z);
-                MethodsBox.transform.position = new Vector3(MethodsBox.transform.position.x, SecDiv.position.y - (MethodsBox.localScale.y) * 0.5f - SecDiv.localScale.y, MethodsBox.transform.position.z);
+                MethodsBox.transform.position = new Vector3(MethodsBox.transform.position.x, FirstDiv.position.y - (MethodsBox.localScale.y) * 0.5f - FirstDiv.localScale.y, MethodsBox.transform.position.z);
 
                 Methods_text.transform.position = new Vector3(MethodsBox.transform.position.x, MethodsBox.transform.position.y - 0.25f, MethodsBox.transform.position.z - 0.5f);
                 Methods_text.GetComponent<TextMesh>().text = metodos;
 
 
-                i += 7;
+                i += .005f;
 
             }
 
@@ -201,8 +203,8 @@ namespace View
             {
                 foreach (KeyValuePair<GameObject, GameObject> g in l.Value)
                 {
-                    l.Key.SetPosition(0, g.Key.transform.FindChild("secondDivider").position);
-                    l.Key.SetPosition(1, g.Value.transform.FindChild("secondDivider").position);
+                    l.Key.SetPosition(0, g.Key.transform.FindChild("firstDivider").position);
+                    l.Key.SetPosition(1, g.Value.transform.FindChild("firstDivider").position);
                     l.Key.SetWidth(.25f, .25f);
                     //l.Key.material = lineMaterial;
                     l.Key.SetColors(Color.grey, Color.grey);
