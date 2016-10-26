@@ -13,7 +13,7 @@ namespace View
     public class ClassDiagram : MonoBehaviour
     {
         #region PRIVATE VARS
-        int i = 0;
+        float i = 0;
                                                                     //origin    destination
         private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRenderes = new Dictionary<LineRenderer, Dictionary<GameObject, GameObject>>();
 
@@ -207,7 +207,7 @@ namespace View
             {
                 foreach (KeyValuePair<GameObject, GameObject> g in l.Value)
                 {
-                    l.Key.transform.parent = g.Key.transform;
+					l.Key.transform.parent = g.Key.transform;
                     if(g.Key.name == "Ambiente")
                     Debug.Log(g.Key.name + "->" + g.Value.name);
                     l.Key.SetPosition(0, g.Key.transform.FindChild("firstDivider").position);
