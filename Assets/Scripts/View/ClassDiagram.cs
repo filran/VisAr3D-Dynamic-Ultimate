@@ -46,6 +46,7 @@ namespace View
         public void renderClassDiagram(ThreeDUMLAPI.ClassDiagram classdiagram, Dictionary<string, IXmlNode> AllMessagesSignatures)
         {
             //print("Diagrama\tNome:" + classdiagram.Name + "\tID:" + classdiagram.Id + "\n");
+            GameObject Diagram = new GameObject(classdiagram.Name);
 
             //Classes = new Dictionary<Class, GameObject>();
             foreach (Class classe in classdiagram.SoftwareEntities)
@@ -154,8 +155,7 @@ namespace View
                 Methods_text.transform.position = new Vector3(MethodsBox.transform.position.x, MethodsBox.transform.position.y - 0.25f, MethodsBox.transform.position.z - 0.5f);
                 Methods_text.GetComponent<TextMesh>().text = metodos;
 
-
-                i += 7;
+                c.transform.parent = Diagram.transform;
 
             }
 
@@ -164,12 +164,12 @@ namespace View
                 string s = c.Key.Name + "\n";
                 foreach (KeyValuePair<IXmlNode, IXmlNode> r in c.Key.Relationships)
                 {
-                    GameObject line = new GameObject("Line Renderer");
-                    line.name = c.Value.name;
                     Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
                     //print(c.Key.Name + "  " + c.Value.name);
                     if (r.Value != null)
                     {
+                        GameObject line = new GameObject("Line Renderer");
+                        line.name = c.Value.name + "Line";
                         pairs.Add(c.Value, FindClasses(r.Value));
                         LineRenderes.Add(line.AddComponent<LineRenderer>(), pairs);
                     }
@@ -189,6 +189,7 @@ namespace View
                 //print("C: " + c.Name + " gg.key: " + gg.Key.Name);
                 if (c.Equals(gg.Key))
                 {
+                    g.transform.parent = gg.Value.transform;
                     //print("EQUAL     C: " + c.Name + " gg.key: " + gg.Key.Name);
                     g = gg.Value;
                 }
@@ -201,6 +202,9 @@ namespace View
             {
                 foreach (KeyValuePair<GameObject, GameObject> g in l.Value)
                 {
+                    l.Key.transform.parent = g.Key.transform;
+                    if(g.Key.name == "Ambiente")
+                    Debug.Log(g.Key.name + "->" + g.Value.name);
                     l.Key.SetPosition(0, g.Key.transform.FindChild("secondDivider").position);
                     l.Key.SetPosition(1, g.Value.transform.FindChild("secondDivider").position);
                     l.Key.SetWidth(.25f, .25f);
