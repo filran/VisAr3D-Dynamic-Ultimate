@@ -57,6 +57,9 @@ namespace View
                 float top = -VirtualEnvironment.scale(classe.Position[classdiagram.Id]["Top"]);
 
                 GameObject c = (GameObject)Instantiate(ClassGO, new Vector3(left, top, 0), Quaternion.identity);
+                
+                //c.AddComponent<CollisionDetection>(); //Add collision
+
                 Classes.Add(classe, c);
                 string atributos = "", metodos = "";
                 c.name = classe.Name;
@@ -157,6 +160,8 @@ namespace View
 
                 c.transform.parent = Diagram.transform;
 
+                //resize
+                c.transform.localScale = new Vector3(.6f, .6f, .6f);
             }
 
             foreach (KeyValuePair<Class, GameObject> c in Classes)

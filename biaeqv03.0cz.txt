@@ -1,0 +1,16 @@
+﻿Redefinido espaçamento horizontal das classes
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Thu Oct 27 10:55:37 2016 -0200
+#
+# On branch evaluation
+# Changes to be committed:
+#	modified:   Assets/Prefabs/ClassAndMethod.prefab
+#	modified:   Assets/Scenes/Scene 01.unity
+#	modified:   Assets/Scripts/View/ClassDiagram.cs
+#	new file:   Assets/Scripts/View/CollisionDetection.cs
+#	modified:   ProjectSettings/GraphicsSettings.asset
+#
+
