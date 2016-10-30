@@ -49,6 +49,8 @@ namespace View
         public string IdObjectClicked { get; set; }
         public string TypeObjectClicked { get; set; }
 
+        public bool HideRelationships = false;
+
         #endregion
 
         #region MESCLANDO E CONFIGURANDO Visar3ddynamic e MenuInteraction
@@ -318,6 +320,13 @@ namespace View
                 FecharMenu();
             });
 
+            Button btshowhiderelation = Menu.transform.FindChild("BtShowHideRelationship").GetComponent<Button>();
+            btshowhiderelation.onClick.AddListener(delegate()
+            {
+                MostrarOuOcultarRelacionamentosEntreDiagramas();
+                FecharMenu();
+            });
+
         }
 
         void MudarMaterialParaBlack()
@@ -405,6 +414,21 @@ namespace View
 
                     go.Value.transform.FindChild("Object").GetComponent<Renderer>().material = LifelineMaterial;
                     go.Value.transform.FindChild("Line").GetComponent<Renderer>().material = LifelineMaterial;
+                }
+            }
+        }
+
+        void MostrarOuOcultarRelacionamentosEntreDiagramas()
+        {
+            foreach (KeyValuePair<LineRenderer, Dictionary<GameObject, GameObject>> line in LineRenderes)
+            {
+                if (HideRelationships)
+                {
+                    line.Key.GetComponent<Renderer>().enabled = false;
+                }
+                else
+                {
+                    line.Key.GetComponent<Renderer>().enabled = true;
                 }
             }
         }

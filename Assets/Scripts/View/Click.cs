@@ -26,6 +26,7 @@ namespace View
         {
             if (Input.GetMouseButtonDown(1))
             { //botão direito
+                MenuInteraction.GetComponent<MenuInteraction>().HideRelationships = !MenuInteraction.GetComponent<MenuInteraction>().HideRelationships;
                 MenuInteraction.GetComponent<MenuInteraction>().DesabilitarColliders();
 
                 MenuInteraction.GetComponent<MenuInteraction>().ObjectClicked = this.gameObject;
@@ -35,7 +36,7 @@ namespace View
                 MenuInteraction.GetComponent<MenuInteraction>().SetaGoToGameObject();
                 MenuInteraction.GetComponent<MenuInteraction>().AddOnClickAosBotoesDoMenu(); 
 
-                print("Testando o botão direito! Este objeto é do tipo " + Type + " com ID " + Id);
+                //print("Testando o botão direito! Este objeto é do tipo " + Type + " com ID " + Id);
             }
         }
     }
