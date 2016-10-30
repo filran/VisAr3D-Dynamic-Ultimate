@@ -209,7 +209,7 @@ namespace View
                 {
                     l.Key.transform.parent = g.Key.transform;
                     if(g.Key.name == "Ambiente")
-                    Debug.Log(g.Key.name + "->" + g.Value.name);
+                    //Debug.Log(g.Key.name + "->" + g.Value.name);
                     l.Key.SetPosition(0, g.Key.transform.FindChild("firstDivider").position);
                     l.Key.SetPosition(1, g.Value.transform.FindChild("firstDivider").position);
                     l.Key.SetWidth(.25f, .25f);

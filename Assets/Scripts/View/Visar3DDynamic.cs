@@ -11,24 +11,26 @@ using System;
 namespace View {
     public class Visar3DDynamic : MonoBehaviour
     {
-        #region PRIVATE VARS
+        //#region PRIVATE VARS
         private ThreeDUML XMI;
         private string SequecenDiagramName;
-        private Dictionary<ThreeDUMLAPI.Class, GameObject> Classes = new Dictionary<Class, GameObject>();
-        private Dictionary<ThreeDUMLAPI.Lifeline, GameObject> Lifelines = new Dictionary<Lifeline, GameObject>();
+        public Dictionary<ThreeDUMLAPI.Class, GameObject> Classes = new Dictionary<Class, GameObject>();
+        public Dictionary<ThreeDUMLAPI.Lifeline, GameObject> Lifelines = new Dictionary<Lifeline, GameObject>();
         private GameObject LineRendererParent = new GameObject("LineRendererParent"); //Create LineRenderer Parent
         private Dictionary<string, Dictionary<ThreeDUMLAPI.Package, GameObject>> Packages = new Dictionary<string, Dictionary<Package, GameObject>>();
                                                 //origin:Class    destination:Lifeline
         private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRenderes;
         private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRendererPackages;
         private int CountPairs = 0;
-        #endregion
+        //#endregion
 
         #region PUBLIC VARS
         public GameObject LifelineGO; //Lifeline Prefab        
         public GameObject ClassGO; //Class Prefab
         public string XMIURL; //XMI file path 
         public GameObject PackageDiagramPrefab;
+
+        public Material LineRendererMaterial;
         #endregion
 
         #region UNITY METHODS
@@ -138,6 +140,9 @@ namespace View {
 
             //Save the lifelines
             Lifelines = SeqDiagComp.Lifelines;
+
+            //Add Lifelines to MenuInteraction
+            this.GetComponent<MenuInteraction>().SetarLifelines(Lifelines);
         }
 
         //Render Class Diagram
@@ -153,6 +158,9 @@ namespace View {
 
             //Save the classes
             Classes = ClassDiagComp.Classes;
+
+            //Add Classes to MenuInteraction
+            this.GetComponent<MenuInteraction>().SetarClasses(Classes);
         }
 
         //RelationshipBetweenDiagrams (Linerenderes)
@@ -175,6 +183,7 @@ namespace View {
                         lineRenderer.SetPosition(0, c.Value.transform.FindChild("firstDivider").position);
                         lineRenderer.SetPosition(1, l.Value.transform.position);
                         lineRenderer.SetWidth(.25f, .25f);
+                        lineRenderer.gameObject.GetComponent<Renderer>().material = LineRendererMaterial;
 
                         Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
                         pairs.Add(c.Value, l.Value);
@@ -197,6 +206,7 @@ namespace View {
                         lineRenderer.SetPosition(0, c.Value.transform.FindChild("firstDivider").transform.position);
                         lineRenderer.SetPosition(1 , p.Value.transform.position);
                         lineRenderer.SetWidth(.25f, .25f);
+                        lineRenderer.gameObject.GetComponent<Renderer>().material = LineRendererMaterial;
 
                         Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
                         pairs.Add(c.Value, p.Value);
@@ -206,6 +216,9 @@ namespace View {
             }
             CountPairs = count;
             //print("EQUALS\n"+equals);
+
+            //Add Relacionamentos entre classes e lifelines ao MenuInteraction
+            this.GetComponent<MenuInteraction>().SetarRelationship(LineRenderes);
         }
 
         private void UpdateLineRenderer()
