@@ -1,11 +1,4 @@
-﻿// TODO
-// # OK     Abrir e fechar menu
-// # OK     Criar linerenderes entre os objetos
-// # OK     Colocar as ações para cada botão do Menu
-// # Mover Camera de acordo com o ViewPoint
-// # Abrir Menu com o botão direito do mouse
-
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -313,7 +306,7 @@ namespace View
             bthighlight.onClick.AddListener(delegate()
             {
                 //print("Highlight relatioships... ");
-                //MudarMaterialParaBlack();
+                MudarMaterialParaBlack();
                 FecharMenu();
             });
 
@@ -321,7 +314,7 @@ namespace View
             btdisablehighlight.onClick.AddListener(delegate()
             {
                 //print("Highlight relatioships... ");
-                //ResetarMaterials();
+                ResetarMaterials();
                 FecharMenu();
             });
 
@@ -339,8 +332,11 @@ namespace View
                 ObjectsRelations.Add(cGO); //Added class
                 ObjectsRelations.Add(Relationship[cGO]); //Add lifeline
 
-                ObjectsRelations[0].transform.FindChild("Class").GetComponent<Renderer>().material = ClassMaterial;
-                ObjectsRelations[1].transform.FindChild("Lifeline").GetComponent<Renderer>().material = LifelineMaterial;
+                ObjectsRelations[0].transform.FindChild("ClassBox").GetComponent<Renderer>().material = ClassMaterial;
+                ObjectsRelations[0].transform.FindChild("MethodsBox").GetComponent<Renderer>().material = ClassMaterial;
+
+                ObjectsRelations[1].transform.FindChild("Object").GetComponent<Renderer>().material = LifelineMaterial;
+                ObjectsRelations[1].transform.FindChild("Line").GetComponent<Renderer>().material = LifelineMaterial;
             }
 
             if (ListLifeline.ContainsKey(this.IdObjectClicked))
@@ -358,8 +354,11 @@ namespace View
                             ObjectsRelations.Add(r.Key);
                             ObjectsRelations.Add(r.Value);
 
-                            ObjectsRelations[0].transform.FindChild("Class").GetComponent<Renderer>().material = ClassMaterial;
-                            ObjectsRelations[1].transform.FindChild("Lifeline").GetComponent<Renderer>().material = LifelineMaterial;
+                            ObjectsRelations[0].transform.FindChild("ClassBox").GetComponent<Renderer>().material = ClassMaterial;
+                            ObjectsRelations[0].transform.FindChild("MethodsBox").GetComponent<Renderer>().material = ClassMaterial;
+
+                            ObjectsRelations[1].transform.FindChild("Object").GetComponent<Renderer>().material = LifelineMaterial;
+                            ObjectsRelations[1].transform.FindChild("Line").GetComponent<Renderer>().material = LifelineMaterial;
                         }
                     }
                 }
@@ -380,8 +379,12 @@ namespace View
                     {
                         foreach (KeyValuePair<GameObject, GameObject> lineline in line.Value)
                         {
-                            lineline.Key.transform.FindChild("Class").GetComponent<Renderer>().material = BlackMaterial;
-                            lineline.Value.transform.FindChild("Lifeline").GetComponent<Renderer>().material = BlackMaterial;
+                            lineline.Key.transform.FindChild("ClassBox").GetComponent<Renderer>().material = BlackMaterial;
+                            lineline.Key.transform.FindChild("MethodsBox").GetComponent<Renderer>().material = BlackMaterial;
+
+                            lineline.Value.transform.FindChild("Object").GetComponent<Renderer>().material = BlackMaterial;
+                            lineline.Value.transform.FindChild("Line").GetComponent<Renderer>().material = BlackMaterial;
+
                             line.Key.GetComponent<Renderer>().material = BlackMaterial;
                         }
                     }
@@ -397,8 +400,11 @@ namespace View
                 line.Key.GetComponent<Renderer>().material = LineRendererMaterial;
                 foreach (KeyValuePair<GameObject, GameObject> go in line.Value)
                 {
-                    go.Key.transform.FindChild("Class").GetComponent<Renderer>().material = ClassMaterial;
-                    go.Value.transform.FindChild("Lifeline").GetComponent<Renderer>().material = LifelineMaterial;
+                    go.Key.transform.FindChild("ClassBox").GetComponent<Renderer>().material = ClassMaterial;
+                    go.Key.transform.FindChild("MethodsBox").GetComponent<Renderer>().material = ClassMaterial;
+
+                    go.Value.transform.FindChild("Object").GetComponent<Renderer>().material = LifelineMaterial;
+                    go.Value.transform.FindChild("Line").GetComponent<Renderer>().material = LifelineMaterial;
                 }
             }
         }
