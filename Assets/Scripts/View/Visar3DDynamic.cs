@@ -11,20 +11,21 @@ using System;
 namespace View {
     public class Visar3DDynamic : MonoBehaviour
     {
-        //#region PRIVATE VARS
+        #region PRIVATE VARS
         private ThreeDUML XMI;
         private string SequecenDiagramName;
-        public Dictionary<ThreeDUMLAPI.Class, GameObject> Classes = new Dictionary<Class, GameObject>();
-        public Dictionary<ThreeDUMLAPI.Lifeline, GameObject> Lifelines = new Dictionary<Lifeline, GameObject>();
-        private GameObject LineRendererParent = new GameObject("LineRendererParent"); //Create LineRenderer Parent
+        private GameObject LineRendererParent; //Create LineRenderer Parent
         private Dictionary<string, Dictionary<ThreeDUMLAPI.Package, GameObject>> Packages = new Dictionary<string, Dictionary<Package, GameObject>>();
                                                 //origin:Class    destination:Lifeline
         private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRenderes;
         private Dictionary<LineRenderer, Dictionary<GameObject, GameObject>> LineRendererPackages;
         private int CountPairs = 0;
-        //#endregion
+        #endregion
 
         #region PUBLIC VARS
+        public Dictionary<ThreeDUMLAPI.Class, GameObject> Classes = new Dictionary<Class, GameObject>();
+        public Dictionary<ThreeDUMLAPI.Lifeline, GameObject> Lifelines = new Dictionary<Lifeline, GameObject>();
+
         public GameObject LifelineGO; //Lifeline Prefab        
         public GameObject ClassGO; //Class Prefab
         public string XMIURL; //XMI file path 
@@ -40,6 +41,22 @@ namespace View {
             LineRenderes = new Dictionary<LineRenderer, Dictionary<GameObject, GameObject>>();
             LineRendererPackages = new Dictionary<LineRenderer, Dictionary<GameObject, GameObject>>();
 
+            renderAll();
+        }
+
+        void Update()
+        {
+            if (CountPairs.Equals(LineRenderes.Keys.Count))
+            {
+                UpdateLineRenderer();
+            }
+        }
+        #endregion
+
+        #region PRIVATE METHODS
+        //Renderizar todos os diagramas
+        private void renderAll()
+        {
             addPackageDiagram(new Vector3(0, 2, 0));
 
             //Esta variável de controle evita de renderizar mais de uma vez o Diagrama de Sequencia... Verificar isso!!!!
@@ -71,12 +88,12 @@ namespace View {
                 Package package = pair.Value as Package;
 
                 //Render Class Diagram if exists
-                if(package.ClassDiagrams.Count > 0)
+                if (package.ClassDiagrams.Count > 0)
                 {
                     foreach (ThreeDUMLAPI.ClassDiagram c in package.ClassDiagrams)
                     {
                         //if class diagram's name is equal to seq diagram's name
-                        if(c.Name.Equals(SequecenDiagramName))
+                        if (c.Name.Equals(SequecenDiagramName))
                         {
                             addClassDiagram(c);
                         }
@@ -85,33 +102,8 @@ namespace View {
             }
 
             RelationshipBetweenDiagrams();
-
-            //TESTS -------------------------------------------------------------
-            //foreach(KeyValuePair<string,IXmlNode> p in XMI.Packages)
-            //{
-            //    print("Pacote: "+p.Value.Name);
-            //}
-            
-            //foreach(KeyValuePair<ThreeDUMLAPI.Class, GameObject> c in Classes)
-            //{
-            //    if(c.Key.Name.Equals("FabricaSemanticos"))
-            //    {
-            //        print(c.Key.Name + "its package is " + c.Key.IdPackage);
-            //    }
-            //}
-
         }
 
-        void Update()
-        {
-            if (CountPairs.Equals(LineRenderes.Keys.Count))
-            {
-                UpdateLineRenderer();
-            }
-        }
-        #endregion
-
-        #region PRIVATE METHODS
         //Render Package Diagram
         private void addPackageDiagram()
         {
@@ -166,6 +158,7 @@ namespace View {
         //RelationshipBetweenDiagrams (Linerenderes)
         private void RelationshipBetweenDiagrams()
         {
+            LineRendererParent = new GameObject("LineRendererParent");
             string equals = "";
             int count = 0;
 
@@ -185,6 +178,8 @@ namespace View {
                         lineRenderer.SetWidth(.25f, .25f);
                         lineRenderer.gameObject.GetComponent<Renderer>().material = LineRendererMaterial;
 
+                        lineRenderer.transform.parent = LineRendererParent.transform;
+
                         Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
                         pairs.Add(c.Value, l.Value);
                         LineRenderes.Add(lineRenderer, pairs);
@@ -201,12 +196,14 @@ namespace View {
                     {
                         //print("FabricaSemanticos está no pacote "+ p.Key.Name +" com id " + p.Key.Id );
                         //Create LineRenderer
-                        GameObject line = new GameObject("line_package");
+                        GameObject line = new GameObject("line_package_"+p.Key.Name);
                         LineRenderer lineRenderer = line.AddComponent<LineRenderer>();
                         lineRenderer.SetPosition(0, c.Value.transform.FindChild("firstDivider").transform.position);
                         lineRenderer.SetPosition(1 , p.Value.transform.position);
                         lineRenderer.SetWidth(.25f, .25f);
                         lineRenderer.gameObject.GetComponent<Renderer>().material = LineRendererMaterial;
+
+                        lineRenderer.transform.parent = LineRendererParent.transform;
 
                         Dictionary<GameObject, GameObject> pairs = new Dictionary<GameObject, GameObject>();
                         pairs.Add(c.Value, p.Value);

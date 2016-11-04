@@ -51,7 +51,7 @@ namespace View
             //Classes = new Dictionary<Class, GameObject>();
             foreach (Class classe in classdiagram.SoftwareEntities)
             {
-                print(classe.Name+"\t\t"+classe.Id);
+                //print(classe.Name+"\t\t"+classe.Id);
 
                 float left = VirtualEnvironment.scale(classe.Position[classdiagram.Id]["Left"]);
                 float top = -VirtualEnvironment.scale(classe.Position[classdiagram.Id]["Top"]);
