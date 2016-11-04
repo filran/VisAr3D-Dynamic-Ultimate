@@ -46,10 +46,7 @@ namespace View {
 
         void Update()
         {
-            if (CountPairs.Equals(LineRenderes.Keys.Count))
-            {
-                UpdateLineRenderer();
-            }
+            UpdateLineRenderer();
         }
         #endregion
 
