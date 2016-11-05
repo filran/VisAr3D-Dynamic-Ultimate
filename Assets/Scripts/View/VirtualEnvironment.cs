@@ -18,6 +18,23 @@ namespace View
         {
             return n * 0.02f;
         }
+
+        //Descobre quem é o número maior e depois descobre a diferença entre eles
+        public static float difference(float a , float b)
+        {
+            float r = 0f;
+
+            if( a > b)
+            {
+                r = a - b;
+            }
+            else
+            {
+                r = b - a;
+            }
+
+            return r;
+        }
         #endregion
     }
 }
