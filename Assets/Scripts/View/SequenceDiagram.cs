@@ -28,7 +28,7 @@ namespace View
         // Use this for initialization
         void Start()
         {
-
+            
         }
 
         // Update is called once per frame
@@ -71,6 +71,8 @@ namespace View
 
                         //Render each lifeline
                         GameObject l = (GameObject)Instantiate(LifelineGO, new Vector3(VirtualEnvironment.scale(lifeline.Left), 0, 0), Quaternion.identity);
+
+                        //l.GetComponent<Click>().MenuInteraction
 
                         //Save lifeline and his Gameobject
                         Lifelines.Add(lifeline, l);
